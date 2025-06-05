@@ -1,0 +1,13 @@
+{
+  "name": "json-sender-advanced",
+  "version": "1.0.0",
+  "scripts": {
+    "all-steps": "pnpm run clean && pnpm run build && pnpm run copy",
+    "build": "wp-scripts build && node build.js",
+    "clean": "rm -rf build json-sender-advanced-dist",
+    "copy": "sudo rm -rfv /var/www/html/wp-content/plugins/json-sender-advanced-dist && sudo cp -r json-sender-advanced-dist /var/www/html/wp-content/plugins/"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^26.0.0"
+  }
+}
