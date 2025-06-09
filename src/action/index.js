@@ -1,9 +1,9 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { TextControl } from '@wordpress/components';
-import { useBlockProps } from '@wordpress/block-editor';
-import { useState } from '@wordpress/element';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+import './styles.css';
 
-registerBlockType('jsonsender/login', {
+registerBlockType('jsonsender/action', {
     attributes: {
         authUrl: { type: 'string', default: '' }
     },

@@ -1,88 +1,67 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { TextControl, TextareaControl, Button, PanelBody } from '@wordpress/components';
+import { TextControl, TextareaControl, Button,ButtonGroup, P, PanelBody } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 import metadata from './block.json';
 import './styles.css';
-import './editor.css';
 
 registerBlockType(metadata.name, {
     ...metadata,
     edit: ({ attributes, setAttributes }) => {
+        const [numberSelected, setNumberSelected] = useState(false);
         return <Fragment>
             <InspectorControls>
                 <PanelBody title="Configuración del JSON" initialOpen={true}>
-                    <TextControl
-                        label="URL destino"
-                        value={attributes.url}
-                        onChange={(val) => setAttributes({ url: val })}
-                    />
                     <TextareaControl
-                        label="JSON"
-                        value={attributes.json}
-                        onChange={(val) => setAttributes({ json: val })}
+                        label="Initial number:"
+                        value={attributes.initialNumber}
+                        onChange={(val) => setAttributes({ initialNumber: val })}
                     />
                 </PanelBody>
             </InspectorControls>
 
             <div {...useBlockProps()}>
-                <TextControl
-                    label="URL destino"
-                    value={attributes.url}
-                    onChange={(val) => setAttributes({ url: val })}
-                />
-                <TextareaControl
-                    label="JSON"
-                    value={attributes.json}
-                    onChange={(val) => setAttributes({ json: val })}
-                />
-                <Button onClick={() => {
-                }}>Testing!!!</Button>
-
+                {
+                    !numberSelected && (
+                        <>
+                            <TextControl
+                                label="Initial number"
+                                value={attributes.initialNumber}
+                                onChange={(val) => setAttributes({ initialNumber: val })}
+                            />
+                            <Button onClick={() => setNumberSelected(true)}>
+                                Accept initial number
+                            </Button>
+                        </>
+                    )
+                }
+                {
+                    numberSelected && (
+                        <ButtonGroup>
+                            <Button variant='primary'>
+                                Number: {attributes.initialNumber}
+                            </Button>|
+                            <Button>
+                                Increment +
+                            </Button>
+                            <Button>
+                                Decrement -
+                            </Button>
+                        </ButtonGroup>
+                    )
+                }
+                
             </div>
         </Fragment>
     },
     save: ({ attributes }) => (
-        <div {...useBlockProps.save()}>
-            <button
-                className="open-modal-btn"
-            >
-                Enviar JSON
-            </button>
-
-            <div
-                className="modal-overlay"
-            >
-                <div
-                    className="modal-content"
-                >
-                    <p>¿Deseas enviar este JSON?</p>
-                    <pre>{attributes.json}</pre>
-                    <button className="close-modal-btn" style={{ marginRight: '10px' }}>Cancelar</button>
-                    <button
-                        className="confirm-send-btn"
-                        data-url={attributes.url}
-                        data-json={attributes.json}
-                    >
-                        Confirmar envío
-                    </button>
-                </div>
-            </div>
-        </div>
+        <div 
+            {...useBlockProps.save()}
+            // id='vara-counter-button'
+            className='vara-counter-button-root'
+            data-initialnumber={attributes.initialNumber}
+        ></div>
     )
-
-    // save: ({ attributes }) => (
-    //     <div {...useBlockProps.save()}>
-    //         <button
-    //             data-json-sender
-    //             data-url={attributes.url}
-    //             data-json={attributes.json}
-    //             style={{ backgroundColor: 'green', color: 'white', padding: '8px' }}
-    //         >
-    //             Enviar JSON
-    //         </button>
-    //     </div>
-    // )
 });
 
 

@@ -1,12 +1,12 @@
 {
   "apiVersion": 2,
-  "name": "vara/loginmodal",
-  "title": "Vara login modal",
+  "name": "vara/counterbutton",
+  "title": "Vara counter button",
   "category": "widgets",
   "icon": "admin-site",
   "description": "component that registers or login users using web3 abstraction",
   "attributes": {
-    "url": { "type": "string", "default": "" }
+    "initialNumber": { "type": "number", "default": "0" }
   },
   "editorScript": "file:./index.js",
   "script":"file:./frontend.js",

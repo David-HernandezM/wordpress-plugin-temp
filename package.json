@@ -1,13 +1,43 @@
 {
-  "name": "json-sender-advanced",
+  "name": "vara-wordpress",
   "version": "1.0.0",
   "scripts": {
-    "all-steps": "pnpm run clean && pnpm run build && pnpm run copy",
+    "all-steps": "pnpm run clean && pnpm run build && pnpm run rm-wordpress && pnpm run cp-wordpress && echo '\ndone!!!'",
+    "cbuild": "pnpm run clean && pnpm run build",
     "build": "wp-scripts build && node build.js",
-    "clean": "rm -rf build json-sender-advanced-dist",
-    "copy": "sudo rm -rfv /var/www/html/wp-content/plugins/json-sender-advanced-dist && sudo cp -r json-sender-advanced-dist /var/www/html/wp-content/plugins/"
+    "clean": "rm -rf build vara-wordpress-dist",
+    "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
+    "cp-wordpress": "sudo cp -r vara-wordpress-dist /var/www/html/wp-content/plugins/",
+    "rm-wordpress": "sudo rm -rfv /var/www/html/wp-content/plugins/vara-wordpress-dist"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^26.0.0"
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "@types/wordpress__block-editor": "^11.5.16",
+    "@types/wordpress__blocks": "^12.5.17",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "@wordpress/scripts": "^26.19.0",
+    "eslint": "^9.28.0",
+    "typescript": "^5.8.3",
+    "worker-loader": "^3.0.8"
+  },
+  "dependencies": {
+    "@gear-js/api": "^0.41.1",
+    "@polkadot/api": "^15.10.2",
+    "@polkadot/extension-dapp": "^0.59.2",
+    "@wordpress/blocks": "^14.14.0",
+    "@wordpress/components": "^29.11.0",
+    "@wordpress/data": "^10.25.0",
+    "@wordpress/element": "^6.25.0",
+    "@wordpress/hooks": "^4.25.0",
+    "@wordpress/primitives": "^4.25.0",
+    "@wordpress/shortcode": "^4.25.0",
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "sailscalls": "github:Vara-Lab/SailsCalls",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5"
   }
 }
