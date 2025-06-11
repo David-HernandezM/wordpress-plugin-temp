@@ -1,0 +1,30 @@
+{
+  "apiVersion": 2,
+  "name": "vara/registermodal",
+  "title": "Vara register modal",
+  "category": "widgets",
+  "icon": "admin-site",
+  "description": "component that registers or login users using web3 abstraction",
+  "attributes": {
+    "url": { "type": "string", "default": "" }
+  },
+  "editorScript": "file:./index.js",
+  "script":"file:./frontend.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "supports": {
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "spacing": {
+      "padding": true
+    },
+    "border": {
+      "radius": true,
+      "color": true,
+      "style": true,
+      "width": true
+    }
+  }
+}

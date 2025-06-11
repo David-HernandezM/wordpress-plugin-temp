@@ -1,0 +1,28 @@
+{
+  "apiVersion": 2,
+  "name": "vara/sailstesting",
+  "title": "Vara sails testing",
+  "category": "widgets",
+  "icon": "admin-site",
+  "description": "component description",
+  "attributes": {},
+  "editorScript": "file:./index.js",
+  "script":"file:./frontend.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "supports": {
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "spacing": {
+      "padding": true
+    },
+    "border": {
+      "radius": true,
+      "color": true,
+      "style": true,
+      "width": true
+    }
+  }
+}

@@ -1,8 +1,7 @@
-
 <?php
 /**
  * Plugin Name: Vara Components
- * Description: Plugin con bloques personalizados (Login y Action) para enviar datos autenticados.
+ * Description: Plugin con bloques personalizados para enviar datos autenticados.
  * Version: 1.0
  * Author: David
  */
@@ -10,6 +9,9 @@
 // 1️⃣ Registrar la opción para guardar el RPC URL
 function gear_plugin_register_settings() {
     register_setting('gear_plugin_settings_group', 'gear_rpc_url');
+    register_setting('gear_plugin_settings_group', 'gear_server_url');
+    register_setting('gear_plugin_settings_group', 'gear_contract_id');
+    register_setting('gear_plugin_settings_group', 'gear_idl_content');
 }
 add_action('admin_init', 'gear_plugin_register_settings');
 
@@ -73,7 +75,28 @@ function gear_plugin_settings_page() {
                     <th scope="row">RPC URL</th>
                     <td>
                         <input type="text" name="gear_rpc_url" value="<?php echo esc_attr(get_option('gear_rpc_url', '')); ?>" size="50" />
-                        <p class="description">Ejemplo: wss://rpc.vara.network</p>
+                        <p class="description">Example: wss://rpc.vara.network</p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">BACKEND URL</th>
+                    <td>
+                        <input type="text" name="gear_server_url" value="<?php echo esc_attr(get_option('gear_server_url', '')); ?>" size="50" />
+                        <p class="description">Example: http://localhost</p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">CONTRACT ADDRESS</th>
+                    <td>
+                        <input type="text" name="gear_contract_id" value="<?php echo esc_attr(get_option('gear_contract_id', '')); ?>" size="50" />
+                        <p class="description">Example: 0x03jf21...</p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">IDL Content</th>
+                    <td>
+                        <textarea name="gear_idl_content" rows="10" cols="80"><?php echo esc_textarea(get_option('gear_idl_content', '')); ?></textarea>
+                        <p class="description">Paste here your contract idl content.</p>
                     </td>
                 </tr>
             </table>
@@ -98,7 +121,7 @@ add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'gear_plugin_acti
 
 // 7️⃣ (Opcional) Registrar tus bloques (tu código original)
 function vara_wordpress_register_blocks() {
-    $blocks = ['action', 'counter_button', 'login_modal', 'wallet_connect'];
+    $blocks = ['counter_button', 'login_modal', 'register_modal', 'sails_testing', 'wallet_connect'];
 
     foreach ( $blocks as $block ) {
         register_block_type( __DIR__ . "/build/$block" );
@@ -124,18 +147,28 @@ function vara_wordpress_register_common_gearapi_script() {
         'vara-wordpress-common-gearapi-js',
         'GearPluginSettings',
         array(
-            'rpcUrl' => get_option('gear_rpc_url', '')
+            'rpcUrl' => get_option('gear_rpc_url', ''),
+            'backendUrl' => get_option('gear_server_url', ''),
+            'contractAddress' => get_option('gear_contract_id', ''),
+            'contractIdl' => get_option('gear_idl_content', '')
         )
     );
+
+    wp_add_inline_script(
+        'vara-wordpress-common-gearapi-js',
+        'window.gearApiWorker = window.gearApiWorker || new Worker("' . plugins_url('build/sailscallsWorker.js', __FILE__) . '", { type: "module" });',
+        'after'
+    );
 }
+
 add_action('wp_enqueue_scripts', 'vara_wordpress_register_common_gearapi_script');
-
-
 
 
 register_deactivation_hook(__FILE__, 'gear_plugin_deactivate');
 
 function gear_plugin_deactivate() {
     delete_option('gear_rpc_url');
+    delete_option('gear_server_url');
+    delete_option('gear_contract_id');
+    delete_option('gear_idl_content');
 }
-

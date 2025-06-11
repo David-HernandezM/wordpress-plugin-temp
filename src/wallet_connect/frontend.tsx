@@ -1,15 +1,33 @@
-import { createRoot, useState } from '@wordpress/element';
-// import s from '!!worker-loader!../common/gearApiWorker.ts';
-// import * from '../common/sailscallsWorker';
-import SailsCallsWorker from '!!worker-loader!../common/gearApiWorker';
-import { xd } from '../common/sailscallsSingleton';
+import { createRoot, useState, useRef, useEffect } from '@wordpress/element';
+import { sendMessageToWorker } from '../common/workerUtils';
+import { decodeAddress } from '@gear-js/api';
+import { web3FromSource } from '@polkadot/extension-dapp';
 
 function WalletConnectButton() {
     const [accounts, setAccounts] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
+    const workerRef = useRef<Worker | null>(null);
 
     const connectWallet = async () => {
-        xd()
+        // import { sailsCallsWorkerInstance } from '../common/sailscallsSingleton';
+
+        // const { sailsCallsWorkerInstance } = await import('../common/sailscallsSingleton');
+
+        const sailscallsWorker: Worker = (window as any).gearApiWorker;   // await sailsCallsWorkerInstance();
+        let x;
+
+        try {
+            x = await sendMessageToWorker(sailscallsWorker, {
+                type: 'checkInstance', 
+            });
+        } catch(e) {
+            console.log('ERROOOOOOR');
+            console.log(e);
+        }
+        
+        console.log('Mensaje de worker');
+        console.log(x);
+
         setLoading(true);
 
         // 👉 Code splitting: import dinámico (solo en este momento se carga la librería)
@@ -23,7 +41,16 @@ function WalletConnectButton() {
         const allAccounts = await web3Accounts();
         console.log(allAccounts);
 
+        // const { signer } = await web3FromSource(allAccounts[0].meta.source);
+        const a = await web3FromSource(allAccounts[0].meta.source);
+
+        allAccounts.forEach(acc => {
+            console.log(acc.address);
+            console.log(decodeAddress(acc.address));
+        });
+
         setAccounts(allAccounts.map(acc => acc.address));
+
         setLoading(false);
     };
 

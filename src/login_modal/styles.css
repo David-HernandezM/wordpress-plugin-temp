@@ -36,3 +36,19 @@
     max-width: 400px;
     text-align: center;
 }
+
+.vara-login-button {
+  min-width: 100px;
+  min-height: 35px;
+  font-size: 16px;
+  background-color: rgb(238, 238, 238);
+  border: none;
+  border-radius: 10px;
+  color: black;
+  font-weight: 700;
+  transition: ease-in-out 0.2s;
+}
+
+.vara-login-button:hover {
+  background-color: rgb(211, 210, 210);
+}

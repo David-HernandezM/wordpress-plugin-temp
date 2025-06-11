@@ -1,21 +1,33 @@
-import { createRoot, useState, useEffect } from "@wordpress/element";
-import { xd } from "../common/sailscallsSingleton";
+import { createRoot, useState } from "@wordpress/element";
 
 function CounterButton({ number }) {
     const [currentNumber, setNumber] = useState(number);
 
-    useEffect(() => {
-        xd()
-    }, [currentNumber])
     return (
         <div>
             <p>
                 Number: {currentNumber}
             </p>
-            <button onClick={() => {setNumber(currentNumber+1)}}>
+            <button onClick={async () => {
+                const rpcUrl = window.GearPluginSettings?.rpcUrl || 'nadota rpc xddd';
+                const serverUrl = window.GearPluginSettings?.backendUrl || 'nadota backend url xdd';
+                const contractId = window.GearPluginSettings?.contractAddress || 'nadota contract address xdd';
+                const contractIdl = window.GearPluginSettings?.contractIdl || 'nadota contract idl xdd';
+
+                console.log('RPCURL: ', rpcUrl);
+                console.log('sercer udl: ', serverUrl);
+                console.log('contract id: ', contractId);
+                console.log('contract idl: ', contractIdl);
+
+
+                setNumber(currentNumber+1);
+            }}>
                 Increment +
             </button>
-            <button onClick={() => {setNumber(currentNumber-1)}}>
+            <button onClick={async () => {
+
+                setNumber(currentNumber-1);
+            }}>
                 Decrement -
             </button>
         </div>

@@ -1,3 +1,10 @@
-.test {
-    padding: 20px;
+.vara-login-button {
+    min-width: 100px;
+    min-height: 35px;
+    font-size: 16px;
+    background-color: green;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
 }
