@@ -1,16 +1,11 @@
 {
   "apiVersion": 2,
-  "name": "vara/registermodal",
-  "title": "Vara register modal",
+  "name": "vara/componenttwo",
+  "title": "Vara component two",
   "category": "widgets",
   "icon": "admin-site",
-  "description": "component that registers or login users using web3 abstraction",
-  "attributes": {
-    "url": {
-      "type": "string",
-      "default": ""
-    }
-  },
+  "description": "component description",
+  "attributes": {},
   "editorScript": "file:./index.js",
   "script": "file:./frontend.js",
   "style": "file:./index.css",

@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "include": ["src/common/sailscallsWorker.worker.ts"],
-  "compilerOptions": {
-    "noEmit": false, // si lo necesitas
-    "isolatedModules": true
-  }
-}

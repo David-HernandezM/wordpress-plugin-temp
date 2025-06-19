@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/common/sailscallsGlobal.ts"],
+  "compilerOptions": {
+    "noEmit": false, 
+    "isolatedModules": true,
+    // "outDir": "build/common"
+  }
+}

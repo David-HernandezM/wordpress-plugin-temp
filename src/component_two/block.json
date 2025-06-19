@@ -1,18 +1,13 @@
 {
   "apiVersion": 2,
-  "name": "vara/counterbutton",
-  "title": "Vara counter button",
+  "name": "vara/componenttwo",
+  "title": "Vara component two",
   "category": "widgets",
   "icon": "admin-site",
-  "description": "component that registers or login users using web3 abstraction",
-  "attributes": {
-    "initialNumber": {
-      "type": "number",
-      "default": "0"
-    }
-  },
+  "description": "component description",
+  "attributes": {},
   "editorScript": "file:./index.js",
-  "script": "file:./frontend.js",
+  "script":"file:./frontend.js",
   "style": "file:./index.css",
   "editorStyle": "file:./index.css",
   "supports": {

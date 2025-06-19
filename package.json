@@ -4,8 +4,8 @@
   "scripts": {
     "all-steps": "pnpm run clean && pnpm run build && pnpm run rm-wordpress && pnpm run cp-wordpress && echo '\ndone!!!'",
     "cbuild": "pnpm run clean && pnpm run build",
-    "build": "wp-scripts build && pnpm run build:worker && node build.js",
-    "build:worker": "webpack --config webpack.worker.config.js",
+    "build": "wp-scripts build && pnpm run build:sailscalls && node build.js",
+    "build:sailscalls": "webpack --config webpack.sailscalls.config.js",
     "clean": "rm -rf build vara-wordpress-dist",
     "newBlock": "node newComponent.js",
     "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
@@ -23,7 +23,7 @@
     "@wordpress/scripts": "^26.19.0",
     "eslint": "^9.28.0",
     "process": "^0.11.10",
-    "ts-loader": "^9.5.2",  
+    "ts-loader": "^9.5.2",
     "types": "link:@polkadot/extension-inject/types",
     "typescript": "^5.8.3",
     "webpack-merge": "^6.0.1"
@@ -43,6 +43,7 @@
     "axios": "^1.9.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
+    "fs-extra": "^11.3.0",
     "sailscalls": "github:Vara-Lab/SailsCalls#development",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"

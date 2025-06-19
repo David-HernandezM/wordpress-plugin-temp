@@ -1,5 +1,4 @@
 import { createRoot, useState, useRef, useEffect } from '@wordpress/element';
-import { sendMessageToWorker } from '../common/workerUtils';
 import { decodeAddress } from '@gear-js/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
 
@@ -14,20 +13,7 @@ function WalletConnectButton() {
         // const { sailsCallsWorkerInstance } = await import('../common/sailscallsSingleton');
 
         const sailscallsWorker: Worker = (window as any).gearApiWorker;   // await sailsCallsWorkerInstance();
-        let x;
-
-        try {
-            x = await sendMessageToWorker(sailscallsWorker, {
-                type: 'checkInstance', 
-            });
-        } catch(e) {
-            console.log('ERROOOOOOR');
-            console.log(e);
-        }
         
-        console.log('Mensaje de worker');
-        console.log(x);
-
         setLoading(true);
 
         // 👉 Code splitting: import dinámico (solo en este momento se carga la librería)

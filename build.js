@@ -1,4 +1,5 @@
-const fs = require('fs');
+// const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const metadata = require('./package.json');
 
@@ -23,11 +24,10 @@ const buildDirPath = path.join(__dirname, 'build');
 const distDir = path.join(__dirname, metadata.name + '-dist');
 const commonDistDir = path.join(distDir.toString(), 'common');
 const indexPhpPath = path.join(__dirname, 'index.php');
-const gearCommonFile = path.join(commonDistDir.toString(), 'gearCommon.js');
+const gearCommonFile = path.join(commonDistDir.toString(), 'gearCommonData.js');
 const itemsToCopy = [
     'build',
     'index.php',
-    'README.md'
 ];
 
 const blocks = fs.readdirSync(buildDirPath).filter(file =>
@@ -112,7 +112,7 @@ function gear_plugin_settings_page() {
                     <th scope="row">RPC URL</th>
                     <td>
                         <input type="text" name="gear_rpc_url" value="<?php echo esc_attr(get_option('gear_rpc_url', '')); ?>" size="50" />
-                        <p class="description">Example: wss://rpc.vara.network</p>
+                        <p class="description">Example: wss://testnet.vara.network</p>
                     </td>
                 </tr>
                 <tr valign="top">
@@ -172,13 +172,21 @@ add_action('init', 'vara_wordpress_register_blocks');
 function vara_wordpress_register_common_gearapi_script() {
     wp_register_script(
         'vara-wordpress-common-gearapi-js',
-        plugins_url('common/gearApiCommon.js', __FILE__), // asegúrate de tener este archivo
+        plugins_url('common/gearCommonData.js', __FILE__), // be sure to have this file
         array(),
         '1.0.0',
         true
     );
 
     wp_enqueue_script('vara-wordpress-common-gearapi-js');
+
+    wp_enqueue_script(
+        'sailscalls-global-api',
+        plugin_dir_url(__FILE__) . 'build/common/sailsCallsGlobalApi.js',
+        array(),
+        '1.0.0',
+        true // Footer para asegurar que window esté listo
+    );
 
     wp_localize_script(
         'vara-wordpress-common-gearapi-js',
@@ -191,11 +199,11 @@ function vara_wordpress_register_common_gearapi_script() {
         )
     );
 
-    wp_add_inline_script(
-        'vara-wordpress-common-gearapi-js',
-        'window.gearApiWorker = window.gearApiWorker || new Worker("' . plugins_url('build/sailscallsWorker.js', __FILE__) . '", { type: "module" });',
-        'after'
-    );
+    // wp_add_inline_script(
+    //     'vara-wordpress-common-gearapi-js',
+    //     'import { getSailsCallsInstance, initSailsCallsInstance } from "' . plugins_url('build/common/sailsCallsGlobalApi.js', __FILE__) . '"; window.SailsCallsGlobal = { getSailsCallsInstance, initSailsCallsInstance };',
+    //     'after'
+    // );
 }
 
 add_action('wp_enqueue_scripts', 'vara_wordpress_register_common_gearapi_script');
@@ -211,9 +219,7 @@ function gear_plugin_deactivate() {
 }`;
 
 
-console.log('Dist dir:')
-console.log(distDir.toString());
-console.log(`\n📦 Bloques detectados: ${blocks.join(', ')}`);
+console.log(`\n📦 Blocks detected: ${blocks.join(', ')}`);
 
 if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir);
@@ -237,45 +243,12 @@ itemsToCopy.forEach(item =>{
     const src = path.join(__dirname, item);
     const dest = path.join(distDir, item);
 
-    copyRecursiveSync(src, dest);
+    fs.move(src, dest);
+
+    // copyRecursiveSync(src, dest);
 });
 
 console.log("✅ plugin packaged in:", distDir);
-
-
-
-const x = `
-<?php
-/**
- * Plugin Name: JSON Sender Advanced
- * Description: Plugin con bloques personalizados (Login y Action) para enviar datos autenticados.
- * Version: 1.0
- * Author: David
- */
-
-// Registra ambos bloques
-function json_sender_advanced_register_blocks() {
-    
-    register_block_type(__DIR__ . '/build/action');
-    register_block_type(__DIR__ . '/build/login_modal');
-    register_block_type(__DIR__ . '/build/counter_button');
-}
-
-add_action('init', 'json_sender_advanced_register_blocks');
-
-// function json_sender_block_scripts() {
-//     wp_enqueue_script(
-//         'json-sender-frontend',
-//         plugins_url('frontend.js', __FILE__),
-//         array(),
-//         null,
-//         true
-//     );
-// }
-// add_action('wp_enqueue_scripts', 'json_sender_block_scripts');
-`;
-
-
 
 
 

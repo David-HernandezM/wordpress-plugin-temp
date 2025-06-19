@@ -4,11 +4,14 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'production',
     entry: {
-        sailscallsWorker: path.resolve(__dirname, 'src/common/sailscallsWorker.worker.ts')
+        sailsCallsGlobalApi: path.resolve(__dirname, 'src/common/sailscallsGlobal.ts')
     },
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: '[name].js'
+        path: path.resolve(__dirname, 'build/common'),
+        filename: '[name].js',
+        library: 'sailscallsGlobalApi',
+        libraryTarget: 'window',
+        clean: true
     },
     experiments: {
         outputModule: true
@@ -20,7 +23,7 @@ module.exports = {
                 use: {
                     loader: 'ts-loader',
                     options: {
-                        configFile: 'tsconfig.worker.json' // <- AQUI es donde le dices usar el tsconfig del Worker
+                        configFile: 'tsconfig.sailscalls.json' 
                     }
                 },
                 exclude: /node_modules/

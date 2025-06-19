@@ -22,3 +22,8 @@ export async function initSailsCallsInstance(rpcUrl: string, contractId: `0x${st
         ] 
     });
 }
+
+export default {
+    initSailsCallsInstance,
+    getSailsCallsInstance
+};
