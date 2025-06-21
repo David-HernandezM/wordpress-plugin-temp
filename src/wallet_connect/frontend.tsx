@@ -1,34 +1,55 @@
 import { createRoot, useState, useRef, useEffect } from '@wordpress/element';
 import { decodeAddress } from '@gear-js/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
+import { Modal, Button } from '@gear-js/ui';
+import { useVaraGearData } from '../common/SaislCallsState/sailscallsHook';
+
+import { Balance } from './Balance';
+// import '@gear-js/ui/dist/index.css';
+import './styles.css';
+import '@gear-js/vara-ui/dist/style.css'
+
+// type Props = {
+//     displayBalance?: 
+// }
+
 
 function WalletConnectButton() {
     const [accounts, setAccounts] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
-    const workerRef = useRef<Worker | null>(null);
+    const [modalOpen, setModalOpen] = useState(false);
+    const { sailsCallsInstance } = useVaraGearData({
+        appName: 'WalletConnect',
+        rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
+        contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
+        contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
+    });
+
+    useEffect(() => {
+        console.log('[walletconnect] Sailscalls instance Init: ', sailsCallsInstance ? 'YES':'NO');
+    }, [sailsCallsInstance]);
 
     const connectWallet = async () => {
-        // import { sailsCallsWorkerInstance } from '../common/sailscallsSingleton';
-
-        // const { sailsCallsWorkerInstance } = await import('../common/sailscallsSingleton');
-
-        const sailscallsWorker: Worker = (window as any).gearApiWorker;   // await sailsCallsWorkerInstance();
-        
         setLoading(true);
 
-        // 👉 Code splitting: import dinámico (solo en este momento se carga la librería)
-        const { web3Enable, web3Accounts } = await import('@polkadot/extension-dapp');
+        // const { web3Enable, web3Accounts } = await import('@polkadot/extension-dapp');
 
-        const rpcUrl = (window as any).GearPluginSettings?.rpcUrl || 'nadota xdddd';
+        // await web3Enable('My Gutenberg Wallet Block');
+        // const allAccounts = await web3Accounts();
+        // console.log(allAccounts);
 
-        console.log(rpcUrl);
+        // // const { signer } = await web3FromSource(allAccounts[0].meta.source);
+        // const a = await web3FromSource(allAccounts[0].meta.source);
 
-        await web3Enable('My Gutenberg Wallet Block');
-        const allAccounts = await web3Accounts();
-        console.log(allAccounts);
+        const { connectWallets } = (window as any).sailscallsGlobalApi;
+        const appName = (window as any).GearPluginSettings?.gearAppName || null;
 
-        // const { signer } = await web3FromSource(allAccounts[0].meta.source);
-        const a = await web3FromSource(allAccounts[0].meta.source);
+        if (!appName) {
+            console.log('App name not set');
+            return;
+        }
+
+        const allAccounts = await connectWallets(appName);
 
         allAccounts.forEach(acc => {
             console.log(acc.address);
@@ -37,14 +58,38 @@ function WalletConnectButton() {
 
         setAccounts(allAccounts.map(acc => acc.address));
 
+
         setLoading(false);
     };
 
     return (
         <div style={{ border: '1px solid #888', padding: '10px' }}>
-            <button onClick={connectWallet} style={{ marginBottom: '10px' }}>
+            {/* <button onClick={connectWallet} style={{ marginBottom: '10px' }}>
                 {loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}
-            </button>
+            </button> */}
+
+            <Button
+                onClick={connectWallet}
+                text={loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}
+                color='primary'
+            />
+
+            <Button
+                onClick={() => setModalOpen(true)}
+                text='testing modal component'
+                color='primary'
+            />
+            {
+                modalOpen && (
+                    <Modal
+                        close={() => setModalOpen(false)}
+                        heading='Connect wallet'
+                        size='large'
+                    >
+                        <p>Wallets</p>
+                    </Modal>
+                )
+            }
             {accounts.length > 0 && (
                 <div>
                     <strong>Cuentas conectadas:</strong>

@@ -1,0 +1,6 @@
+{
+  "apiVersion": 2,
+  "name": "mi-plugin/bloque-c",
+  "title": "Bloque C (Visualizador)",
+  "editorScript": "file:./index.js"
+}

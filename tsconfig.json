@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "allowJs": true
+    "allowJs": true,
   },
-  "include": ["src/**/*", "src/types"]
+  "include": ["src/**/*", "src/types"],
 }

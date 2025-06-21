@@ -11,6 +11,12 @@ importers:
       '@gear-js/api':
         specifier: ^0.41.1
         version: 0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2)
+      '@gear-js/ui':
+        specifier: ^0.7.0
+        version: 0.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.89.2)
+      '@gear-js/vara-ui':
+        specifier: ^0.3.1
+        version: 0.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@polkadot/api':
         specifier: ^15.10.2
         version: 15.10.2
@@ -41,9 +47,6 @@ importers:
       assert:
         specifier: ^2.1.0
         version: 2.1.0
-      axios:
-        specifier: ^1.9.0
-        version: 1.10.0
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -54,8 +57,8 @@ importers:
         specifier: ^11.3.0
         version: 11.3.0
       sailscalls:
-        specifier: github:Vara-Lab/SailsCalls#development
-        version: https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/8153730e70689b3c8b37c61f47cec20369fdcc4d(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2)(decimal.js@10.5.0)(sails-js-parser@0.4.2)(sails-js@0.4.2(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2))
+        specifier: github:Vara-Lab/SailsCalls
+        version: https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/2b87f88d65c0c026d776192f006778693aba4fbd(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2)(decimal.js@10.5.0)(sails-js-parser@0.4.2)(sails-js@0.4.2(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2))
       stream-browserify:
         specifier: ^3.0.0
         version: 3.0.0
@@ -66,6 +69,9 @@ importers:
       '@polkadot/extension-inject':
         specifier: ^0.59.2
         version: 0.59.2(@polkadot/api@15.10.2)(@polkadot/util@13.5.2)
+      '@svgr/webpack':
+        specifier: ^8.1.0
+        version: 8.1.0(typescript@5.8.3)
       '@types/react':
         specifier: ^19.1.7
         version: 19.1.8
@@ -922,6 +928,19 @@ packages:
       '@polkadot/api': 15.9.1
       '@polkadot/wasm-crypto': 7.4.1
       rxjs: 7.8.2
+
+  '@gear-js/ui@0.7.0':
+    resolution: {integrity: sha512-E9hsEr9j7aL0n+M2gX6rku8QVOSlKltYLNg2Fxk/mhE9udgTLbPrz9fHJbFUklUPocsVC7hySRRhWMkfoYj7fQ==}
+    peerDependencies:
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
+      sass: ^1.69.1
+
+  '@gear-js/vara-ui@0.3.1':
+    resolution: {integrity: sha512-4dWChBDNS3q9mnrrzgC7B4VpiwCztv3GFWRYds8OWKfebfCCr15o6VBRn4DVZCxU9hygDZtcpjlB0AdjAei8hg==}
+    peerDependencies:
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
 
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
@@ -5182,6 +5201,9 @@ packages:
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
+  non.geist@1.0.4:
+    resolution: {integrity: sha512-2spmLTgz5ipZrFGLiI1YkiHb8Yit0yFySPvWzal3wCwCFilMFQQ/Jwwz4lcEatwIKUpOeMYwyFwP8MJ8EVKqGA==}
+
   normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
 
@@ -6042,9 +6064,9 @@ packages:
       '@gear-js/api': ^0.42.0
       '@polkadot/api': ^15.9.1
 
-  sailscalls@https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/8153730e70689b3c8b37c61f47cec20369fdcc4d:
-    resolution: {tarball: https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/8153730e70689b3c8b37c61f47cec20369fdcc4d}
-    version: 2.0.2
+  sailscalls@https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/2b87f88d65c0c026d776192f006778693aba4fbd:
+    resolution: {tarball: https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/2b87f88d65c0c026d776192f006778693aba4fbd}
+    version: 2.1.0
     peerDependencies:
       '@gear-js/api': ^0.42.0
       '@polkadot/api': ^15.9.1
@@ -8176,6 +8198,18 @@ snapshots:
       '@polkadot/api': 15.10.2
       '@polkadot/wasm-crypto': 7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2)))
       rxjs: 7.8.2
+
+  '@gear-js/ui@0.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.89.2)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      sass: 1.89.2
+
+  '@gear-js/vara-ui@0.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      non.geist: 1.0.4
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@hapi/hoek@9.3.0': {}
 
@@ -13786,6 +13820,8 @@ snapshots:
 
   node-releases@2.0.19: {}
 
+  non.geist@1.0.4: {}
+
   normalize-package-data@2.5.0:
     dependencies:
       hosted-git-info: 2.8.9
@@ -14697,7 +14733,7 @@ snapshots:
     optionalDependencies:
       sails-js-types: 0.4.2
 
-  sailscalls@https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/8153730e70689b3c8b37c61f47cec20369fdcc4d(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2)(decimal.js@10.5.0)(sails-js-parser@0.4.2)(sails-js@0.4.2(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2)):
+  sailscalls@https://codeload.github.com/Vara-Lab/SailsCalls/tar.gz/2b87f88d65c0c026d776192f006778693aba4fbd(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2)(decimal.js@10.5.0)(sails-js-parser@0.4.2)(sails-js@0.4.2(@gear-js/api@0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2))(@polkadot/api@15.10.2)):
     dependencies:
       '@gear-js/api': 0.41.1(@polkadot/api@15.10.2)(@polkadot/wasm-crypto@7.4.1(@polkadot/util@13.5.2)(@polkadot/x-randomvalues@13.5.2(@polkadot/util@13.5.2)(@polkadot/wasm-util@7.4.1(@polkadot/util@13.5.2))))(rxjs@7.8.2)
       '@polkadot/api': 15.10.2

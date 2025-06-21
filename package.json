@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "@polkadot/extension-inject": "^0.59.2",
+    "@svgr/webpack": "^8.1.0",
     "@types/react": "^19.1.7",
     "@types/react-dom": "^19.1.6",
     "@types/wordpress__block-editor": "^11.5.16",
@@ -30,6 +31,8 @@
   },
   "dependencies": {
     "@gear-js/api": "^0.41.1",
+    "@gear-js/ui": "^0.7.0",
+    "@gear-js/vara-ui": "^0.3.1",
     "@polkadot/api": "^15.10.2",
     "@polkadot/extension-dapp": "^0.59.2",
     "@wordpress/blocks": "^14.14.0",
@@ -40,11 +43,10 @@
     "@wordpress/primitives": "^4.25.0",
     "@wordpress/shortcode": "^4.25.0",
     "assert": "^2.1.0",
-    "axios": "^1.9.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
     "fs-extra": "^11.3.0",
-    "sailscalls": "github:Vara-Lab/SailsCalls#development",
+    "sailscalls": "github:Vara-Lab/SailsCalls",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"
   }

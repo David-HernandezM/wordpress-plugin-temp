@@ -8,7 +8,7 @@
   "attributes": {},
   "editorScript": "file:./index.js",
   "script":"file:./frontend.js",
-  "style": "file:./index.css",
+  "style": "file:./frontend.css",
   "editorStyle": "file:./index.css",
   "supports": {
     "color": {

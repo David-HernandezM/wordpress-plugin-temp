@@ -1,0 +1,6 @@
+{
+  "apiVersion": 2,
+  "name": "mi-plugin/bloque-b",
+  "title": "Bloque B",
+  "editorScript": "file:./index.js"
+}

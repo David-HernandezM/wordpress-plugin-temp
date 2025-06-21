@@ -13,9 +13,16 @@ module.exports = merge(defaultConfig, {
             util: require.resolve('util/')
         }
     },
-    // entry: {
-    //     sailscallsWorker: path.resolve(__dirname, 'src/common/sailscallsWorker.worker.ts')
-    // },
+    module: {
+        rules: [
+            // Esta regla permite importar SVGs como componentes React
+            {
+                test: /\.svg$/i,
+                issuer: /\.[jt]sx?$/,
+                use: ['@svgr/webpack']
+            }
+        ]
+    },
     plugins: [
         new webpack.ProvidePlugin({
             process: 'process/browser'

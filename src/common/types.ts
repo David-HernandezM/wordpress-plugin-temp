@@ -1,0 +1,1 @@
+export type ProviderProps = Omit<React.ProviderProps<never>, 'value'>;

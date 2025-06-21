@@ -49,6 +49,7 @@ function gear_plugin_register_settings() {
     register_setting('gear_plugin_settings_group', 'gear_server_url');
     register_setting('gear_plugin_settings_group', 'gear_contract_id');
     register_setting('gear_plugin_settings_group', 'gear_idl_content');
+    register_setting('gear_plugin_settings_group', 'gear_app_name');
 }
 add_action('admin_init', 'gear_plugin_register_settings');
 
@@ -109,6 +110,13 @@ function gear_plugin_settings_page() {
             <?php do_settings_sections('gear_plugin_settings_group'); ?>
             <table class="form-table">
                 <tr valign="top">
+                    <th scope="row">VARA APP NAME</th>
+                    <td>
+                        <input type="text" name="gear_app_name" value="<?php echo esc_attr(get_option('gear_app_name', '')); ?>" size="50" />
+                        <p class="description">Example: My_Project</p>
+                    </td>
+                </tr>
+                <tr valign="top">
                     <th scope="row">RPC URL</th>
                     <td>
                         <input type="text" name="gear_rpc_url" value="<?php echo esc_attr(get_option('gear_rpc_url', '')); ?>" size="50" />
@@ -145,7 +153,7 @@ function gear_plugin_settings_page() {
 
 // 5️⃣ Página About (opcional)
 function gear_plugin_about_page() {
-    echo '<div class="wrap"><h1>About Vara Components</h1><p>Este plugin fue creado por David para enviar datos autenticados.</p></div>';
+    echo '<div class="wrap"><h1>About Vara Components</h1><p></p></div>';
 }
 
 // 6️⃣ Agregar link "Settings" en la pantalla de Plugins
@@ -195,15 +203,10 @@ function vara_wordpress_register_common_gearapi_script() {
             'rpcUrl' => get_option('gear_rpc_url', ''),
             'backendUrl' => get_option('gear_server_url', ''),
             'contractAddress' => get_option('gear_contract_id', ''),
-            'contractIdl' => get_option('gear_idl_content', '')
+            'contractIdl' => get_option('gear_idl_content', ''),
+            'gearAppName' => get_option('gear_app_name', '')
         )
     );
-
-    // wp_add_inline_script(
-    //     'vara-wordpress-common-gearapi-js',
-    //     'import { getSailsCallsInstance, initSailsCallsInstance } from "' . plugins_url('build/common/sailsCallsGlobalApi.js', __FILE__) . '"; window.SailsCallsGlobal = { getSailsCallsInstance, initSailsCallsInstance };',
-    //     'after'
-    // );
 }
 
 add_action('wp_enqueue_scripts', 'vara_wordpress_register_common_gearapi_script');
@@ -216,6 +219,7 @@ function gear_plugin_deactivate() {
     delete_option('gear_server_url');
     delete_option('gear_contract_id');
     delete_option('gear_idl_content');
+    delete_option('gear_app_name');
 }`;
 
 

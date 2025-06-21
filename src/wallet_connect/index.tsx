@@ -1,7 +1,8 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { TextControl, TextareaControl, Button, PanelBody } from '@wordpress/components';
+import { TextControl, TextareaControl, PanelBody, Button } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
+import { Button as GearButton } from '@gear-js/ui';
 import metadata from './block.json';
 import './styles.css';
 
@@ -9,9 +10,13 @@ registerBlockType(metadata.name, {
     ...metadata,
     edit: ({ attributes, setAttributes }) => {
         const [numberSelected, setNumberSelected] = useState(false);
+
         return <Fragment>
             <div {...useBlockProps()}>
-                <p>Wallet connect button!</p>
+                <Button
+                    text='Connect Wallet'
+                    onClick={() => {}}
+                />
             </div>
         </Fragment>;
     },
