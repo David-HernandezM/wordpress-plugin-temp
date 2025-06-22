@@ -2,7 +2,7 @@ import { createRoot, useState, useRef, useEffect } from '@wordpress/element';
 import { decodeAddress } from '@gear-js/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { Modal, Button } from '@gear-js/ui';
-import { useVaraGearData } from '../common/SaislCallsState/sailscallsHook';
+import { useVaraGearData } from '../common/hooks/useGlobalData/sailscallsHook';
 
 import { Balance } from './Balance';
 // import '@gear-js/ui/dist/index.css';
@@ -19,15 +19,28 @@ function WalletConnectButton() {
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const { sailsCallsInstance } = useVaraGearData({
-        appName: 'WalletConnect',
-        rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
-        contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
-        contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
+        initSailsCalls: true,
+        sailsCallsData: {
+            rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
+            contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
+            contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
+        }
     });
 
-    useEffect(() => {
-        console.log('[walletconnect] Sailscalls instance Init: ', sailsCallsInstance ? 'YES':'NO');
-    }, [sailsCallsInstance]);
+    // useEffect(() => {
+    //     console.log('[WalletConnect] Se inicio el componente con gear iniciado: ', gearGlobalDataApi ? 'YES':'NO');
+    // }, [gearGlobalDataApi]);
+
+    // const { sailsCallsInstance } = useVaraGearData({
+        // appName: 'WalletConnect',
+        // rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
+        // contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
+        // contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
+    // });
+
+    // useEffect(() => {
+    //     console.log('[walletconnect] Sailscalls instance Init: ', sailsCallsInstance ? 'YES':'NO');
+    // }, [sailsCallsInstance]);
 
     const connectWallet = async () => {
         setLoading(true);
@@ -67,7 +80,6 @@ function WalletConnectButton() {
             {/* <button onClick={connectWallet} style={{ marginBottom: '10px' }}>
                 {loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}
             </button> */}
-
             <Button
                 onClick={connectWallet}
                 text={loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}

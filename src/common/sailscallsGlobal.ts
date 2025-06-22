@@ -1,12 +1,15 @@
 import { SailsCalls } from "sailscalls";
-import { DEFAULT_INJECT_TIMEOUT_MS, LOCAL_STORAGE_KEY } from "./Account/consts";
-import { getLoggedInAccount, getWallets } from "./Account/utils";
-import { Account, Wallet, Wallets } from "./Account/types";
+// import { DEFAULT_INJECT_TIMEOUT_MS, LOCAL_STORAGE_KEY } from "./Account/consts";
+// import { getLoggedInAccount, getWallets } from "./Account/utils";
+// import { Account, Wallet, Wallets } from "./Account/types";
 import { Unsubcall } from "@polkadot/extension-inject/types";
-import { useVaraGearData } from "./SaislCallsState/sailscallsHook";
+// import { useVaraGearData } from "./hooks/useGlobalData/sailscallsHook";
 
-type initGearVaraGLobalProps = {
-    appName: string,
+
+
+import { Wallets, Account } from "./hooks/Account/types";
+
+type SailsCallsData = {
     rpcUrl: string, 
     contractId: `0x${string}`, 
     contractIdl: string
@@ -21,94 +24,130 @@ type Value = {
   logout: () => void;
 };
 
-const DEFAULT_VALUE = {
-  wallets: undefined,
-  account: undefined,
-  isAnyWallet: false,
-  isAccountReady: false,
-  login: () => {},
-  logout: () => {},
-} as const;
+// const DEFAULT_VALUE = {
+//   wallets: undefined,
+//   account: undefined,
+//   isAnyWallet: false,
+//   isAccountReady: false,
+//   login: () => {},
+//   logout: () => {},
+// } as const;
 
-let sailsCallsInstance: SailsCalls | null = null;
-let accountsData: Value = DEFAULT_VALUE;
-let intervalAccountId: number | null = null;
-let unsubsInstance: Unsubcall[] = [];
+export class WalletsData {
+    // private appName: string,
+    // private accountsData: Value,
+    // private intervalAccountId: number | null, 
+    private wallets: Wallets;
+    private account: Account | undefined;
+    private unsubsInstance: Unsubcall[]
 
-
-export class GearGlobalDataAPi {
-    private constructor (
-        private appName: string,
-        private sailscalls: SailsCalls,
-        private accountsData: Value,
-        private intervalAccountId: number | null, 
-        private unsubsInstance: Unsubcall[]
-    ) {}
-
-    static async new({ appName ,rpcUrl, contractId, contractIdl }: initGearVaraGLobalProps) {
-        const sailsCallsInstance = await SailsCalls.new({
-            network: rpcUrl,
-            newContractsData: [
-                {
-                    contractName: 'VaraContract',
-                    address: contractId,
-                    idl: contractIdl
-                }
-            ]
-        });
-
-        return new GearGlobalDataAPi(
-            appName,
-            sailsCallsInstance,
-            DEFAULT_VALUE,
-            null,
-            []
-        );
+    constructor() {
+        // this.appName = appName;
+        // this.accountsData = DEFAULT_VALUE;
+        this.wallets = {};
+        this.unsubsInstance = [];
     }
 
-    get getAppName() {
-        return this.appName;
+    setAccount(account?: Account) {
+        this.account = account;
     }
 
-    get getSailsCalls() {
-        return this.sailscalls;
-    }
+    setWallets(wallets: Wallets | ((wallets: Wallets) => Wallets)) {
+        if (typeof wallets != 'function') {
+            this.wallets = wallets;
+            return;
+        }
 
-    get getAccountsData() {
-        return this.accountsData;
-    }
+        const walletsResult = wallets(this.wallets);
 
-    async connectWallets() {
-        const { web3Enable } = await import('@polkadot/extension-dapp');
-
-        await web3Enable(this.appName);  
-
-        startAccountsInterval(this.appName);
-
-        window.addEventListener('beforeunload', cleanup);
-        window.addEventListener('pagehide', cleanup);
-
+        this.wallets = walletsResult;
     }
 }
 
-let gearVaraDataGlobal: GearGlobalDataAPi | null = null;
+// export class VaraSailsCalls {
+//     private constructor (
+//         private sailscalls: SailsCalls,
+//     ) {}
 
-export async function initGearVaraGlobalObject({ appName, rpcUrl, contractId, contractIdl }: initGearVaraGLobalProps) {
-    if (gearVaraDataGlobal) {
+//     static async new({rpcUrl, contractId, contractIdl }: SailsCallsData) {
+//         const sailsCallsInstance = await SailsCalls.new({
+//             network: rpcUrl,
+//             newContractsData: [
+//                 {
+//                     contractName: 'VaraContract',
+//                     address: contractId,
+//                     idl: contractIdl
+//                 }
+//             ]
+//         });
+
+//         return new VaraSailsCalls()
+
+//         // return new GearGlobalDataAPi(
+//         //     appName,
+//         //     sailsCallsInstance,
+//         //     DEFAULT_VALUE,
+//         //     null,
+//         //     []
+//         // );
+//     }
+
+//     setAccount(_account: Account) {
+        
+//     }
+
+//     get getAppName() {
+//         return this.appName;
+//     }
+
+//     get getSailsCalls() {
+//         return this.sailscalls;
+//     }
+
+//     get getAccountsData() {
+//         return this.accountsData;
+//     }
+
+//     // async connectWallets() {
+//     //     const { web3Enable } = await import('@polkadot/extension-dapp');
+
+//     //     await web3Enable(this.appName);  
+
+//     //     startAccountsInterval(this.appName);
+
+//     //     window.addEventListener('beforeunload', cleanup);
+//     //     window.addEventListener('pagehide', cleanup);
+
+//     // }
+// }
+
+let sailscallsInstance: SailsCalls | null = null;
+let walletsDataInstance: WalletsData = new WalletsData();
+
+export async function initSailsCalls({rpcUrl, contractId, contractIdl }: SailsCallsData) {
+    if (sailscallsInstance) {
         console.warn('Already exists a gear vara global object instance!');
         return;
     }
-    gearVaraDataGlobal = await GearGlobalDataAPi.new({
-        appName,
-        rpcUrl,
-        contractId,
-        contractIdl
-    });
 
+    sailscallsInstance = await SailsCalls.new({
+        network: rpcUrl,
+        newContractsData: [
+            {
+                contractName: 'VaraContract',
+                address: contractId,
+                idl: contractIdl
+            }
+        ]
+    });
 }
 
-export function getGearVaraGlobalInstance(): GearGlobalDataAPi | null {
-    return gearVaraDataGlobal;
+export function getSailsCallsInstance(): SailsCalls | null {
+    return sailscallsInstance;
+}
+
+export function getWalletsData(): WalletsData | null {
+    return walletsDataInstance;
 }
 
 // //
@@ -139,114 +178,123 @@ export function getGearVaraGlobalInstance(): GearGlobalDataAPi | null {
 //     });
 // }
 
-//
+
+
+
+
+
+
+
+
+
+
 export async function connectWallets(appName: string) {
     const { web3Enable, web3Accounts } = await import('@polkadot/extension-dapp');
     await web3Enable('My Gutenberg Wallet Block');  
     const allAccounts = await web3Accounts();
 
-    startAccountsInterval(appName);
-    window.addEventListener('beforeunload', cleanup);
-    window.addEventListener('pagehide', cleanup);
+    // startAccountsInterval(appName);
+    // window.addEventListener('beforeunload', cleanup);
+    // window.addEventListener('pagehide', cleanup);
 
     return allAccounts;
 }
 
 
-export async function startAccountsInterval(appName: string) {
-    if (intervalAccountId !== null) return;
+// export async function startAccountsInterval(appName: string) {
+//     if (intervalAccountId !== null) return;
 
-    const login = (_account: Account) => {
-        // setAccount(_account);
-        accountsData.account = _account;
-        localStorage.setItem(LOCAL_STORAGE_KEY.ACCOUNT_ADDRESS, _account.address);
-    };
+//     const login = (_account: Account) => {
+//         // setAccount(_account);
+//         accountsData.account = _account;
+//         localStorage.setItem(LOCAL_STORAGE_KEY.ACCOUNT_ADDRESS, _account.address);
+//     };
 
-    const logout = () => {
-        // setAccount(undefined);
-        accountsData.account = undefined;
-        localStorage.removeItem(LOCAL_STORAGE_KEY.ACCOUNT_ADDRESS);
-    };
+//     const logout = () => {
+//         // setAccount(undefined);
+//         accountsData.account = undefined;
+//         localStorage.removeItem(LOCAL_STORAGE_KEY.ACCOUNT_ADDRESS);
+//     };
 
-    const handleAccountsChange = (id: string, accounts: Account[]) => {
-        // setWallets((prevWallets) =>
-        //     prevWallets ? { ...prevWallets, [id]: { ...prevWallets[id], accounts } } : prevWallets,
-        // );
+//     const handleAccountsChange = (id: string, accounts: Account[]) => {
+//         // setWallets((prevWallets) =>
+//         //     prevWallets ? { ...prevWallets, [id]: { ...prevWallets[id], accounts } } : prevWallets,
+//         // );
 
-        const prevWallets = accountsData.wallets;
+//         const prevWallets = accountsData.wallets;
 
-        accountsData.wallets = prevWallets 
-            ? { ...prevWallets, [id]: { ...prevWallets[id], accounts } }
-            : prevWallets;
+//         accountsData.wallets = prevWallets 
+//             ? { ...prevWallets, [id]: { ...prevWallets[id], accounts } }
+//             : prevWallets;
 
-        const prevAccount = accountsData.account;
+//         const prevAccount = accountsData.account;
 
-        if (!prevAccount || id !== prevAccount.meta.source) {
-            accountsData.account = prevAccount;
-            return;
-            // return prevAccount;
-        }
+//         if (!prevAccount || id !== prevAccount.meta.source) {
+//             accountsData.account = prevAccount;
+//             return;
+//             // return prevAccount;
+//         }
 
-        const isLoggedIn = Boolean(accounts.length) && accounts.some(({ address }) => address === prevAccount.address);
+//         const isLoggedIn = Boolean(accounts.length) && accounts.some(({ address }) => address === prevAccount.address);
 
-        if (isLoggedIn) {
-            accountsData.account = prevAccount;
-            // return prevAccount;
-        }
+//         if (isLoggedIn) {
+//             accountsData.account = prevAccount;
+//             // return prevAccount;
+//         }
 
-        // setAccount((prevAccount) => {
-        //     if (!prevAccount || id !== prevAccount.meta.source) return prevAccount;
+//         // setAccount((prevAccount) => {
+//         //     if (!prevAccount || id !== prevAccount.meta.source) return prevAccount;
 
-        //     const isLoggedIn = Boolean(accounts.length) && accounts.some(({ address }) => address === prevAccount.address);
+//         //     const isLoggedIn = Boolean(accounts.length) && accounts.some(({ address }) => address === prevAccount.address);
 
-        //     if (isLoggedIn) return prevAccount;hh
-        // });
-    };
+//         //     if (isLoggedIn) return prevAccount;hh
+//         // });
+//     };
 
-    const handleWalletChange = (id: string, wallet: Wallet) => {
-        // setWallets((prevWallets) => (prevWallets ? { ...prevWallets, [id]: wallet } : prevWallets));
-        const prevWallets = accountsData.wallets;
+//     const handleWalletChange = (id: string, wallet: Wallet) => {
+//         // setWallets((prevWallets) => (prevWallets ? { ...prevWallets, [id]: wallet } : prevWallets));
+//         const prevWallets = accountsData.wallets;
 
-        accountsData.wallets = prevWallets
-            ? { ...prevWallets, [id]: wallet }
-            : prevWallets;
-    }
+//         accountsData.wallets = prevWallets
+//             ? { ...prevWallets, [id]: wallet }
+//             : prevWallets;
+//     }
 
-    const registerUnsub = (unsub: Unsubcall) => {
-        unsubsInstance.push(unsub);
-        // unsubsRef.current.push(unsub);
-    }
+//     const registerUnsub = (unsub: Unsubcall) => {
+//         unsubsInstance.push(unsub);
+//         // unsubsRef.current.push(unsub);
+//     }
 
 
-    intervalAccountId = window.setInterval(async () => {
-        console.log('APP NAME: ', appName);
+//     intervalAccountId = window.setInterval(async () => {
+//         console.log('APP NAME: ', appName);
 
-        accountsData.isAnyWallet = Object.keys(accountsData.wallets || {}).length > 0;
-        accountsData.isAccountReady = Boolean(accountsData.wallets);
+//         accountsData.isAnyWallet = Object.keys(accountsData.wallets || {}).length > 0;
+//         accountsData.isAccountReady = Boolean(accountsData.wallets);
 
-        getWallets(appName, handleAccountsChange, handleWalletChange, registerUnsub).then(result => {
-            const accountLoggetId = getLoggedInAccount(result);
-            accountsData.wallets = result;
-            accountsData.account = accountLoggetId;
-        });
-    }, DEFAULT_INJECT_TIMEOUT_MS);
-}
+//         getWallets(appName, handleAccountsChange, handleWalletChange, registerUnsub).then(result => {
+//             const accountLoggetId = getLoggedInAccount(result);
+//             accountsData.wallets = result;
+//             accountsData.account = accountLoggetId;
+//         });
+//     }, DEFAULT_INJECT_TIMEOUT_MS);
+// }
 
-export async function cleanup() {
-  if (intervalAccountId !== null) {
-    clearInterval(intervalAccountId);
-    intervalAccountId = null;
-  }
+// export async function cleanup() {
+//   if (intervalAccountId !== null) {
+//     clearInterval(intervalAccountId);
+//     intervalAccountId = null;
+//   }
 
-  unsubsInstance.forEach(unsub => unsub());
-  unsubsInstance = [];
-}
+//   unsubsInstance.forEach(unsub => unsub());
+//   unsubsInstance = [];
+// }
 
 export default {
     // initSailsCallsInstance,
-    initGearVaraGlobalObject,
-    getGearVaraGlobalInstance,
-
+    initSailsCalls,
+    getSailsCallsInstance,
+    getWalletsData,
     // getSailsCallsInstance,
     connectWallets,
     // getAccountsData,

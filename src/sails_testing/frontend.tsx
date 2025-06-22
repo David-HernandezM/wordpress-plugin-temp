@@ -3,58 +3,34 @@ import { web3FromSource } from "@polkadot/extension-dapp";
 import { createRoot, useRef, useEffect } from "@wordpress/element";
 import { Button } from "@gear-js/ui";
 import type { SailsCalls } from "sailscalls";
-import { useVaraGearData } from "../common/SaislCallsState/sailscallsHook";
+import { useVaraGearData } from "../common/hooks/useGlobalData/sailscallsHook";
 
 
-function CounterComponent() {
-    const { sailsCallsInstance } = useVaraGearData({
-            appName: 'CounterButton',
-            rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
-            contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
-            contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
-        });
+function SailsTesting() {
+    const { sailsCallsInstance } = useVaraGearData();
+
+    // useEffect(() => {
+    //     console.log('[CounterButton] isntancia de sailscalls: ', gearGlobalDataApi ? 'YES':'NO');
+    // }, [sailsCallsInstance]);
+
+
+    // const { sailsCallsInstance } = useVaraGearData({
+    //         appName: 'CounterButton',
+    //         rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
+    //         contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
+    //        b contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
+    //     });
     
-        useEffect(() => {
-            console.log('[CounterButton] Sailscalls instance Init: ', sailsCallsInstance ? 'YES':'NO');
-        }, [sailsCallsInstance]);
+    //     useEffect(() => {
+    //         console.log('[CounterButton] Sailscalls instance Init: ', sailsCallsInstance ? 'YES':'NO');
+    //     }, [sailsCallsInstance]);
         
     return (
         <div>
             <Button 
-                text="Create instance"
-                color="secondary"
-                onClick={async () => {
-                    const rpcUrl = (window as any).GearPluginSettings?.rpcUrl || null;
-                    const contractId = (window as any).GearPluginSettings?.contractAddress || null;
-                    const contractIdl = (window as any).GearPluginSettings?.contractIdl || null;
-                    const { getSailsCallsInstance, initSailsCallsInstance } = (window as any).sailscallsGlobalApi;
-
-                    
-                    if (!rpcUrl || !contractId || !contractIdl) {
-                        alert('datos faltantes');
-                        return
-                    }
-                    
-                    const sailsCallsInstance: SailsCalls = getSailsCallsInstance();
-
-                    if (sailsCallsInstance) {
-                        console.log('Ya existe una instancia de sails!');
-                        return;
-                    }
-
-                    console.log('Se creara instancia:');
-
-                    await initSailsCallsInstance(rpcUrl, contractId, contractIdl);
-
-                    console.log('Instancia creada');
-                }}
-            />
-            <Button 
                 text="send message"
                 color="secondary"
                 onClick={async () => {
-                    const { getSailsCallsInstance } = (window as any).sailscallsGlobalApi;
-                    const sailsCallsInstance: SailsCalls = getSailsCallsInstance();
                     const appName = (window as any).GearPluginSettings?.gearAppName || null;
 
                     if (!sailsCallsInstance) {
@@ -93,8 +69,6 @@ function CounterComponent() {
                 text="read state"
                 color="secondary"
                 onClick={async () => {
-                    const { getSailsCallsInstance } = (window as any).sailscallsGlobalApi;
-                    const sailsCallsInstance: SailsCalls = getSailsCallsInstance();
                     const appName = (window as any).GearPluginSettings?.gearAppName || null;
 
                     if (!sailsCallsInstance) {
@@ -131,6 +105,6 @@ function CounterComponent() {
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.vara-sails-testing-root').forEach(rootComponent => {
         const root = createRoot(rootComponent);
-        root.render(<CounterComponent />);
+        root.render(<SailsTesting />);
     });
 });

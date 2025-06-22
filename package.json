@@ -2,15 +2,22 @@
   "name": "vara-wordpress",
   "version": "1.0.0",
   "scripts": {
-    "all-steps": "pnpm run clean && pnpm run build && pnpm run rm-wordpress && pnpm run cp-wordpress && echo '\ndone!!!'",
-    "cbuild": "pnpm run clean && pnpm run build",
     "build": "wp-scripts build && pnpm run build:sailscalls && node build.js",
     "build:sailscalls": "webpack --config webpack.sailscalls.config.js",
-    "clean": "rm -rf build vara-wordpress-dist",
     "newBlock": "node newComponent.js",
     "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
+    "all-steps": "pnpm run clean && pnpm run build && pnpm run rm-wordpress && pnpm run cp-wordpress && echo '\ndone!!!'",
+    "cbuild": "pnpm run clean && pnpm run build",
+    "clean": "rm -rf build vara-wordpress-dist",
     "cp-wordpress": "sudo cp -r vara-wordpress-dist /var/www/html/wp-content/plugins/",
-    "rm-wordpress": "sudo rm -rfv /var/www/html/wp-content/plugins/vara-wordpress-dist"
+    "rm-wordpress": "sudo rm -rfv /var/www/html/wp-content/plugins/vara-wordpress-dist",
+    "allw": "pnpm run cleanw && pnpm run build && pnpm run rm-wordpress-w && pnpm run cp-wordpress-w && echo \"done!!\"",
+    "cbuildw": "pnpm run cleanw && pnpm run build",
+    "cleanw": "rimraf vara-wordpress-dist",
+    "rm-wordpress-w": "rimraf \"C:\\\\xampp\\\\htdocs\\\\wordpress\\\\wp-content\\\\plugins\\\\vara-wordpress-dist\"",
+    "cp-wordpress-w": "cpy \"vara-wordpress-dist/**/*\" \"C:\\\\xampp\\\\htdocs\\\\wordpress\\\\wp-content\\\\plugins\\\\vara-wordpress-dist\" --cwd=. --parents"
+
+    
   },
   "devDependencies": {
     "@polkadot/extension-inject": "^0.59.2",
@@ -22,11 +29,14 @@
     "@typescript-eslint/eslint-plugin": "^8.34.0",
     "@typescript-eslint/parser": "^8.34.0",
     "@wordpress/scripts": "^26.19.0",
+    "cpy-cli": "^5.0.0",
     "eslint": "^9.28.0",
     "process": "^0.11.10",
+    "rimraf": "^6.0.1",
     "ts-loader": "^9.5.2",
     "types": "link:@polkadot/extension-inject/types",
     "typescript": "^5.8.3",
+    "webpack-cli": "^6.0.1",
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
