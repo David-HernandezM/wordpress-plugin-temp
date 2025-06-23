@@ -10,7 +10,7 @@ module.exports = merge(defaultConfig, {
             buffer: require.resolve('buffer/'),
             crypto: require.resolve('crypto-browserify'),
             stream: require.resolve('stream-browserify'),
-            util: require.resolve('util/')
+            util: require.resolve('util/'),
         }
     },
     module: {
@@ -19,7 +19,7 @@ module.exports = merge(defaultConfig, {
             {
                 test: /\.svg$/i,
                 issuer: /\.[jt]sx?$/,
-                use: ['@svgr/webpack']
+                use: ['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     },

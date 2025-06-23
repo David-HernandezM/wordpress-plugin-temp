@@ -190,7 +190,7 @@ function vara_wordpress_register_common_gearapi_script() {
 
     wp_enqueue_script(
         'sailscalls-global-api',
-        plugin_dir_url(__FILE__) . 'build/common/sailsCallsGlobalApi.js',
+        plugin_dir_url(__FILE__) . 'build/common/varaGearGlobalData.js',
         array(),
         '1.0.0',
         true // Footer para asegurar que window esté listo
@@ -212,15 +212,15 @@ function vara_wordpress_register_common_gearapi_script() {
 add_action('wp_enqueue_scripts', 'vara_wordpress_register_common_gearapi_script');
 
 
-register_deactivation_hook(__FILE__, 'gear_plugin_deactivate');
+// register_deactivation_hook(__FILE__, 'gear_plugin_deactivate');
 
-function gear_plugin_deactivate() {
-    delete_option('gear_rpc_url');
-    delete_option('gear_server_url');
-    delete_option('gear_contract_id');
-    delete_option('gear_idl_content');
-    delete_option('gear_app_name');
-}`;
+// function gear_plugin_deactivate() {
+//     delete_option('gear_rpc_url');
+//     delete_option('gear_server_url');
+//     delete_option('gear_contract_id');
+//     delete_option('gear_idl_content');
+//     delete_option('gear_app_name');
+// }`;
 
 
 console.log(`\n📦 Blocks detected: ${blocks.join(', ')}`);

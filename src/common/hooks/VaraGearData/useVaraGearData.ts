@@ -16,7 +16,19 @@ import {
     useRef
 } from "@wordpress/element";
 import type { SailsCalls } from "sailscalls";
-import type { WalletsData } from "../../sailscallsGlobal";
+import type { WalletsData } from "../../varaGearGlobalData";
+import { useMemo } from "react";
+
+type  Value = 
+    | {
+        sailsCallsInstance: undefined,
+        isApiReady: false
+      }
+    | {
+        sailsCallsInstance: SailsCalls,
+        isApiReady: true
+      };
+
 
 interface Props {
     initSailsCalls?: boolean;
@@ -29,15 +41,25 @@ interface InitSailsCallsProps {
     contractIdl: string;
 }
 
+interface PluginData {
+    [key: string]: string | undefined
+}
+
 export function useVaraGearData(data?: Props) {
-    const { getWalletsData } = (window as any).sailscallsGlobalApi;
-    const [sailsCallsInstance, setSailsCallsInstance] = useState<SailsCalls | null>(null);
+    const { getWalletsData } = (window as any).varaGearGlobalData;
+    const {
+        gearAppName,
+        rpcUrl,
+        contractAddress,
+        contractIdl
+    }: PluginData = (window as any).GearPluginSettings;
+    const [sailsCallsInstance, setSailsCallsInstance] = useState<SailsCalls>();
     const walletsData = useRef<WalletsData>(getWalletsData());
     const sailscallsIntervalId = useRef<number | null>(null);
     
     // useEffect to init SailsCalls instance
     useEffect(() => {
-        const { initSailsCalls, getSailsCallsInstance, getWalletsData } = (window as any).sailscallsGlobalApi;
+        const { initSailsCalls, getSailsCallsInstance, getWalletsData } = (window as any).varaGearGlobalData;
 
         const getInstanceIntervalId = window.setInterval(() => {
             const sailsCallsInstance = getSailsCallsInstance();
@@ -63,8 +85,19 @@ export function useVaraGearData(data?: Props) {
         }
     }, []);
 
+    const value = useMemo(
+        () => sailsCallsInstance
+            ? { sailsCallsInstance, isApiReady: true as const }
+            : { sailsCallsInstance, isApiReady: false as const },
+        [sailsCallsInstance],
+    )
+
     return {
-        sailsCallsInstance,
-        walletsData
+        ...value,
+        walletsData,
+        gearAppName,
+        rpcUrl,
+        contractAddress,
+        contractIdl
     }
 }

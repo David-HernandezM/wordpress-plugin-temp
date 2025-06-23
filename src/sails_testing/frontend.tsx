@@ -3,7 +3,7 @@ import { web3FromSource } from "@polkadot/extension-dapp";
 import { createRoot, useRef, useEffect } from "@wordpress/element";
 import { Button } from "@gear-js/ui";
 import type { SailsCalls } from "sailscalls";
-import { useVaraGearData } from "../common/hooks/useGlobalData/sailscallsHook";
+import { useVaraGearData } from "../common/hooks/VaraGearData/useVaraGearData";
 
 
 function SailsTesting() {
@@ -24,9 +24,30 @@ function SailsTesting() {
     //     useEffect(() => {
     //         console.log('[CounterButton] Sailscalls instance Init: ', sailsCallsInstance ? 'YES':'NO');
     //     }, [sailsCallsInstance]);
+
+ 
+
         
     return (
         <div>
+{/* 
+            <Button
+                onClick={() => {
+                    console.log('Valor actual hook: ', value);
+                }}
+                text='See value'
+                color='secondary'
+            />
+            <Button
+                onClick={() => {
+                    setValue('SailsTesting');
+                }}
+                text='Change value sails'
+                color='secondary'
+            /> */}
+
+
+
             <Button 
                 text="send message"
                 color="secondary"

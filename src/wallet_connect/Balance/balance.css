@@ -1,3 +1,32 @@
-.vara-balance-text {
-    color: green;
+.gear-vara-balance-balance {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gear-vara-balance-text {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.gear-vara-balance-text.gear {
+    color: #fff;
+}
+
+.gear-vara-balance-text.vara {
+    color: #000;
+}
+
+.gear-vara-balance-value {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: -0.02em;
+}
+
+.gear-vara-balance-unit {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
 }

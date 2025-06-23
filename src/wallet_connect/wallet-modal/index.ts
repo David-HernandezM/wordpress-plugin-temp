@@ -3,4 +3,5 @@ type Props = {
 }
 
 export function WalletModal({ close }: Props) {
+    
 }

@@ -2,28 +2,23 @@ import { createRoot, useState, useRef, useEffect } from '@wordpress/element';
 import { decodeAddress } from '@gear-js/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { Modal, Button } from '@gear-js/ui';
-import { useVaraGearData } from '../common/hooks/useGlobalData/sailscallsHook';
-
+import { useVaraGearData } from '../common/hooks/VaraGearData/useVaraGearData';
+import { Wallet } from './wallet';
 import { Balance } from './Balance';
-// import '@gear-js/ui/dist/index.css';
+import { usePluginData } from '../common/hooks/PluginData/usePluginData';
 import './styles.css';
-import '@gear-js/vara-ui/dist/style.css'
-
-// type Props = {
-//     displayBalance?: 
-// }
-
 
 function WalletConnectButton() {
     const [accounts, setAccounts] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const { rpcUrl, contractAddress, contractIdl } = usePluginData();
     const { sailsCallsInstance } = useVaraGearData({
         initSailsCalls: true,
         sailsCallsData: {
-            rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
-            contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
-            contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
+            rpcUrl: rpcUrl || '',
+            contractId: contractAddress ? contractAddress as `0x${string}` : '0x0',
+            contractIdl: contractIdl || ''
         }
     });
 
@@ -54,7 +49,7 @@ function WalletConnectButton() {
         // // const { signer } = await web3FromSource(allAccounts[0].meta.source);
         // const a = await web3FromSource(allAccounts[0].meta.source);
 
-        const { connectWallets } = (window as any).sailscallsGlobalApi;
+        const { connectWallets } = (window as any).varaGearGlobalData;
         const appName = (window as any).GearPluginSettings?.gearAppName || null;
 
         if (!appName) {
@@ -80,6 +75,24 @@ function WalletConnectButton() {
             {/* <button onClick={connectWallet} style={{ marginBottom: '10px' }}>
                 {loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}
             </button> */}
+            {/* <Button
+                onClick={() => {
+                    console.log('Valor actual hook: ', value);
+                }}
+                text='See value'
+                color='primary'
+            />
+            <Button
+                onClick={() => {
+                    setValue('Walletvalue');
+                }}
+                text='Change value wallet'
+                color='primary'
+            /> */}
+
+            <Wallet />
+
+
             <Button
                 onClick={connectWallet}
                 text={loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}

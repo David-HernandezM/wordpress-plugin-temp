@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/common/sailscallsGlobal.ts"],
+  "include": ["src/common/varaGearGlobalData.ts"],
   "compilerOptions": {
     "noEmit": false, 
     "isolatedModules": true,

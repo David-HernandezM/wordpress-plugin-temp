@@ -48,8 +48,28 @@ export class WalletsData {
         this.unsubsInstance = [];
     }
 
-    setAccount(account?: Account) {
-        this.account = account;
+    registerUnsub(unsub: Unsubcall) {
+        this.unsubsInstance.push(unsub);
+    }
+
+    cleanUnsubs() {
+        this.unsubsInstance.forEach(unsub => unsub());
+        this.unsubsInstance = [];
+    }
+
+    setAccount(account?: Account | ((account?: Account) => Account | undefined)) {
+        if (!account) {
+            this.account = undefined;
+            return;
+        }
+
+        if (typeof account != 'function') {
+            this.account = account;
+            return;
+        }
+
+        const temp = account(this.account);
+        this.account = temp;
     }
 
     setWallets(wallets: Wallets | ((wallets: Wallets) => Wallets)) {
@@ -289,6 +309,7 @@ export async function connectWallets(appName: string) {
 //   unsubsInstance.forEach(unsub => unsub());
 //   unsubsInstance = [];
 // }
+
 
 export default {
     // initSailsCallsInstance,

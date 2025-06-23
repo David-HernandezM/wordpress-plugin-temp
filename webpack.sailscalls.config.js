@@ -4,12 +4,12 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'production',
     entry: {
-        sailsCallsGlobalApi: path.resolve(__dirname, 'src/common/sailscallsGlobal.ts')
+        varaGearGlobalData: path.resolve(__dirname, 'src/common/varaGearGlobalData.ts')
     },
     output: {
         path: path.resolve(__dirname, 'build/common'),
         filename: '[name].js',
-        library: 'sailscallsGlobalApi',
+        library: 'varaGearGlobalData',
         libraryTarget: 'window',
         clean: true
     },
