@@ -1,5 +1,5 @@
 import { Balance } from '@polkadot/types/interfaces';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from 'react';
 import { useVaraGearData } from '../VaraGearData/useVaraGearData';
 
 // import { useAlert, useApi } from '@/context';

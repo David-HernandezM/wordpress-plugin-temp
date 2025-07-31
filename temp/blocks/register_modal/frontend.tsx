@@ -1,4 +1,4 @@
-// import { createRoot, useState } from "@wordpress/element";
+// import { createRoot, useState } from "react";
 
 // function RegisterComponent() {
 //     const [showModal, setShowModal] = useState(false);
@@ -75,7 +75,7 @@
 
 
 
-import { createRoot, useState } from "@wordpress/element";
+import { createRoot, useState } from "react";
 
 function RegisterComponent() {
     const [showModal, setShowModal] = useState(false);

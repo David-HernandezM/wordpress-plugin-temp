@@ -1,4 +1,5 @@
-import { createRoot, useState, useRef, useEffect } from '@wordpress/element';
+import { useState, useRef, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import { decodeAddress } from '@gear-js/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { Modal, Button } from '@gear-js/ui';
@@ -6,7 +7,19 @@ import { useVaraGearData } from '../common/hooks/VaraGearData/useVaraGearData';
 import { Wallet } from './wallet';
 import { Balance } from './Balance';
 import { usePluginData } from '../common/hooks/PluginData/usePluginData';
-import './styles.css';
+// import './styles.css';
+// import '@gear-js/vara-ui/dist/style.css';
+
+
+
+// import '@gear-js/vara-ui/dist/style.css';
+import '../common/vara-ui-styles.css';
+import './account-button/account-button.css';
+import './Balance/balance.css';
+import './wallet/wallet.css';
+import './wallet-button/wallet-button.css';
+import './wallet-modal/wallet-modal.css';
+// import './styles.css';
 
 function WalletConnectButton() {
     const [accounts, setAccounts] = useState<string[]>([]);
@@ -22,32 +35,9 @@ function WalletConnectButton() {
         }
     });
 
-    // useEffect(() => {
-    //     console.log('[WalletConnect] Se inicio el componente con gear iniciado: ', gearGlobalDataApi ? 'YES':'NO');
-    // }, [gearGlobalDataApi]);
-
-    // const { sailsCallsInstance } = useVaraGearData({
-        // appName: 'WalletConnect',
-        // rpcUrl: (window as any).GearPluginSettings?.rpcUrl || '',
-        // contractId: (window as any).GearPluginSettings?.contractAddress || '0X0000',
-        // contractIdl: (window as any).GearPluginSettings?.contractIdl || ''
-    // });
-
-    // useEffect(() => {
-    //     console.log('[walletconnect] Sailscalls instance Init: ', sailsCallsInstance ? 'YES':'NO');
-    // }, [sailsCallsInstance]);
 
     const connectWallet = async () => {
         setLoading(true);
-
-        // const { web3Enable, web3Accounts } = await import('@polkadot/extension-dapp');
-
-        // await web3Enable('My Gutenberg Wallet Block');
-        // const allAccounts = await web3Accounts();
-        // console.log(allAccounts);
-
-        // // const { signer } = await web3FromSource(allAccounts[0].meta.source);
-        // const a = await web3FromSource(allAccounts[0].meta.source);
 
         const { connectWallets } = (window as any).varaGearGlobalData;
         const appName = (window as any).GearPluginSettings?.gearAppName || null;
@@ -72,25 +62,8 @@ function WalletConnectButton() {
 
     return (
         <div style={{ border: '1px solid #888', padding: '10px' }}>
-            {/* <button onClick={connectWallet} style={{ marginBottom: '10px' }}>
-                {loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}
-            </button> */}
-            {/* <Button
-                onClick={() => {
-                    console.log('Valor actual hook: ', value);
-                }}
-                text='See value'
-                color='primary'
-            />
-            <Button
-                onClick={() => {
-                    setValue('Walletvalue');
-                }}
-                text='Change value wallet'
-                color='primary'
-            /> */}
-
-            <Wallet />
+        
+            <Wallet theme='vara'/>
 
 
             <Button
@@ -136,3 +109,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+    // "react-dom@18.3.1

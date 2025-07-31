@@ -1,0 +1,7 @@
+/* @import '@gear-js/vara-ui/dist/style.css'; */
+@import url('../../node_modules/@gear-js/vara-ui/dist/style.css');
+@import url('./account-button/account-button.css');
+@import url('./Balance/balance.css');
+@import url('./wallet/wallet.css');
+@import url('./wallet-button/wallet-button.css');
+@import url('./wallet-modal/wallet-modal.css');

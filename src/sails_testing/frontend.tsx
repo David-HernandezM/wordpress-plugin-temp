@@ -1,8 +1,7 @@
 import { decodeAddress } from "@gear-js/api";
 import { web3FromSource } from "@polkadot/extension-dapp";
-import { createRoot, useRef, useEffect } from "@wordpress/element";
+import { createRoot } from "react-dom/client";
 import { Button } from "@gear-js/ui";
-import type { SailsCalls } from "sailscalls";
 import { useVaraGearData } from "../common/hooks/VaraGearData/useVaraGearData";
 
 

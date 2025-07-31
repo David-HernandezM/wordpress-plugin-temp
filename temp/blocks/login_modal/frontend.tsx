@@ -1,4 +1,4 @@
-// import { createRoot, useState } from "@wordpress/element";
+// import { createRoot, useState } from "react";
 
 // function LoginComponent() {
 //     const [isAuthenticated, setIsAuthenticated] = useState(
@@ -119,7 +119,8 @@
 
 
 
-import { createRoot, useState, useEffect } from "@wordpress/element";
+import { useState, useEffect } from "react";
+import { createRoot } from "react-dom/client";
 
 function LoginComponent() {
     const [isAuthenticated, setIsAuthenticated] = useState(

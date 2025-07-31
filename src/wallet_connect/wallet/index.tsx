@@ -1,11 +1,11 @@
-import { useState } from "@wordpress/element";
+import { useState, useEffect } from "react";
 import { useAccount } from "../../common/hooks/Account/useAccount";
-import { UI_CONFIG } from "../ui_config";
 import { Button } from "@gear-js/ui";
 import { VaraAccountButton } from "../account-button";
 import { GearAccountButton } from "../account-button";
 import { Balance } from "../Balance";
-import './wallet.css';
+import { WalletModal } from "../wallet-modal";
+// import './wallet.css';
 
 type Props = {
     theme?: 'gear' | 'vara';
@@ -15,13 +15,18 @@ type Props = {
 }
 
 export function Wallet({ theme='vara', displayBalance = true, accountButtonClassName }: Props) {
-    const { account, isAccountReady } = useAccount('wallet');
+    const { account, isAccountReady } = useAccount('wallet-main');
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     if (!isAccountReady) return null;
+
+    // useEffect(() => {
+    //     console.log("El account cambio!!!");
+    //     console.log(account);
+    // }, [account]);
 
     return (
         <>
@@ -44,6 +49,7 @@ export function Wallet({ theme='vara', displayBalance = true, accountButtonClass
                     )
                 }
             </div>
+            { isModalOpen && <WalletModal theme={theme} close={closeModal} /> }
         </>
     );
 }

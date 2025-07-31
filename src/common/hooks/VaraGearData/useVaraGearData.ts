@@ -1,5 +1,5 @@
 // import { useDispatch, useSelect } from "@wordpress/data";
-// import { useState, useEffect } from "@wordpress/element";
+// import { useState, useEffect } from "react";
 // import VaraGearStore, { 
 //     VARA_STORE_KEY, 
 //     selectors as sel, 
@@ -13,11 +13,12 @@
 import {
     useState, 
     useEffect,
-    useRef
-} from "@wordpress/element";
+    useRef,
+    useMemo
+} from "react";
 import type { SailsCalls } from "sailscalls";
 import type { WalletsData } from "../../varaGearGlobalData";
-import { useMemo } from "react";
+import type { WindowFunctions } from "../../types";
 
 type  Value = 
     | {
@@ -46,7 +47,11 @@ interface PluginData {
 }
 
 export function useVaraGearData(data?: Props) {
-    const { getWalletsData } = (window as any).varaGearGlobalData;
+    const { 
+        getWalletsData,
+        initSailsCalls,
+        getSailsCallsInstance
+    } = (window as any).varaGearGlobalData as WindowFunctions;
     const {
         gearAppName,
         rpcUrl,
@@ -59,7 +64,7 @@ export function useVaraGearData(data?: Props) {
     
     // useEffect to init SailsCalls instance
     useEffect(() => {
-        const { initSailsCalls, getSailsCallsInstance, getWalletsData } = (window as any).varaGearGlobalData;
+        // const { initSailsCalls, getSailsCallsInstance } = (window as any).varaGearGlobalData;
 
         const getInstanceIntervalId = window.setInterval(() => {
             const sailsCallsInstance = getSailsCallsInstance();
@@ -98,6 +103,7 @@ export function useVaraGearData(data?: Props) {
         gearAppName,
         rpcUrl,
         contractAddress,
-        contractIdl
+        contractIdl,
+        getWalletsData
     }
 }

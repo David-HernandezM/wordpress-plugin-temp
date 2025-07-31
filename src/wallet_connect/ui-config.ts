@@ -4,8 +4,6 @@ import * as Vara from '@gear-js/vara-ui';
 import { GearAccountButton, VaraAccountButton } from './account-button';
 import { GearWalletButton, VaraWalletButton } from './wallet-button';
 
-import '@gear-js/vara-ui/dist/style.css';
-
 const UI_CONFIG = {
   gear: {
     Button: Gear.Button,

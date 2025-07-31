@@ -2,6 +2,7 @@ import * as Gear from '@gear-js/ui';
 import * as Vara from '@gear-js/vara-ui';
 import { FunctionComponent, ReactNode, SVGProps } from 'react';
 import cx from 'clsx';
+// import './wallet-button.css';
 
 type Props = {
   children: ReactNode;
@@ -10,29 +11,28 @@ type Props = {
 };
 
 type WalletProps = {
-  SVG: FunctionComponent<SVGProps<SVGSVGElement> & { title?: string | undefined }>;
+  // SVG: FunctionComponent<SVGProps<SVGSVGElement> & { title?: string | undefined }>;
   name: string;
 };
 
-function Wallet({ SVG, name }: WalletProps) {
+function Wallet({ name }: WalletProps) {
   return (
     <span className='wallet-button-wallet'>
-      <SVG className='wallet-button-icon' />
       {name}
     </span>
   );
 }
 
-function VaraWalletButton({ children, SVG, name, ...props }: Props & WalletProps) {
+function VaraWalletButton({ children, name, ...props }: Props & WalletProps) {
   return (
     <Vara.Button className='wallet-button-button' color="plain" size="small" block {...props}>
-      <Wallet SVG={SVG} name={name} />
+      <Wallet name={name} />
       {children}
     </Vara.Button>
   );
 }
 
-function GearWalletButton({ children, SVG, name, ...props }: Props & WalletProps) {
+function GearWalletButton({ children, name, ...props }: Props & WalletProps) {
   return (
     <button
       type="button"
@@ -44,25 +44,25 @@ function GearWalletButton({ children, SVG, name, ...props }: Props & WalletProps
         'wallet-button-button',
       )}
       {...props}>
-      <Wallet SVG={SVG} name={name} />
+      <Wallet name={name} />
       {children}
     </button>
   );
 }
 
-function VaraWalletButtonChange({ SVG, name, children, ...props }: Omit<Props, 'disabled'> & WalletProps) {
+function VaraWalletButtonChange({ name, children, ...props }: Omit<Props, 'disabled'> & WalletProps) {
   return (
     <Vara.Button color="transparent" {...props}>
-      <Wallet SVG={SVG} name={name} />
+      <Wallet name={name} />
       {children}
     </Vara.Button>
   );
 }
 
-function GearWalletButtonChange({ SVG, name, children, ...props }: Omit<Props, 'disabled'> & WalletProps) {
+function GearWalletButtonChange({name, children, ...props }: Omit<Props, 'disabled'> & WalletProps) {
   return (
     <button type="button" className={cx(Gear.buttonStyles.button, Gear.buttonStyles.transparent)} {...props}>
-      <Wallet SVG={SVG} name={name} />
+      <Wallet  name={name} />
       {children}
     </button>
   );

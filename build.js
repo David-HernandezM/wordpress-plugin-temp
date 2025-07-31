@@ -50,6 +50,7 @@ function gear_plugin_register_settings() {
     register_setting('gear_plugin_settings_group', 'gear_contract_id');
     register_setting('gear_plugin_settings_group', 'gear_idl_content');
     register_setting('gear_plugin_settings_group', 'gear_app_name');
+    register_setting('gear_plugin_settings_group', 'vara_gear_style');
 }
 add_action('admin_init', 'gear_plugin_register_settings');
 
@@ -144,6 +145,26 @@ function gear_plugin_settings_page() {
                         <p class="description">Paste here your contract idl content.</p>
                     </td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row">Network Selection</th>
+                    <td>
+                        <select name="vara_gear_style">
+                            <?php
+                                $selected = get_option('vara_gear_style', 'vara');
+                                $options = ['vara' => 'Vara', 'gear' => 'Gear'];
+                                foreach ($options as $value => $label) {
+                                    printf(
+                                        '<option value="%s" %s>%s</option>',
+                                        esc_attr($value),
+                                        selected($selected, $value, false),
+                                        esc_html($label)
+                                    );
+                                }
+                            ?>
+                        </select>
+                        <p class="description">Choose between Vara or Gear.</p>
+                    </td>
+                </tr>
             </table>
             <?php submit_button(); ?>
         </form>
@@ -204,7 +225,8 @@ function vara_wordpress_register_common_gearapi_script() {
             'backendUrl' => get_option('gear_server_url', ''),
             'contractAddress' => get_option('gear_contract_id', ''),
             'contractIdl' => get_option('gear_idl_content', ''),
-            'gearAppName' => get_option('gear_app_name', '')
+            'gearAppName' => get_option('gear_app_name', ''),
+            'gearVaraStyle' => get_option('vara_gear_style', 'vara')
         )
     );
 }
@@ -220,6 +242,7 @@ add_action('wp_enqueue_scripts', 'vara_wordpress_register_common_gearapi_script'
 //     delete_option('gear_contract_id');
 //     delete_option('gear_idl_content');
 //     delete_option('gear_app_name');
+//     delete_option('vara_gear_style');
 // }`;
 
 

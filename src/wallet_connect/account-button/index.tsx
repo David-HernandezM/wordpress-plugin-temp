@@ -1,7 +1,14 @@
 import * as Gear from '@gear-js/ui';
 import * as Vara from '@gear-js/vara-ui';
+// import { Button as ButtonV, ButtonProps as ButtonPropsV } from '@gear-js/vara-ui';
+// import { ButtonProps as ButtonPropsG, buttonStyles } from '@gear-js/ui';
 import cx from 'clsx';
-import './account-button.css';
+// import './account-button.css';
+
+// type Props<T extends ButtonPropsV | ButtonPropsG> = {
+//   name: string | undefined;
+//   address: string;
+// } & Pick<T, 'block' | 'color' | 'size' | 'onClick'>;
 
 type Props<T extends Vara.ButtonProps | Gear.ButtonProps> = {
   name: string | undefined;
@@ -28,6 +35,11 @@ function GearAccountButton(props: Props<Gear.ButtonProps>) {
         Gear.buttonStyles[size],
         Gear.buttonStyles[color],
         block && Gear.buttonStyles.block,
+        // buttonStyles.button,
+        // buttonStyles.noWrap,
+        // buttonStyles[size],
+        // buttonStyles[color],
+        // block && buttonStyles.block,
       )}
       onClick={onClick}>
       <span>{name}</span>

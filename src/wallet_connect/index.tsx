@@ -1,10 +1,17 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { TextControl, TextareaControl, PanelBody, Button } from '@wordpress/components';
+import { TextControl, TextareaControl, PanelBody } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
-import { Button as GearButton } from '@gear-js/ui';
+import { Button } from '@gear-js/vara-ui';
 import metadata from './block.json';
-import './styles.css';
+// import './block-styles.css';
+
+import '../common/vara-ui-styles.css';
+import './account-button/account-button.css';
+import './Balance/balance.css';
+import './wallet/wallet.css';
+import './wallet-button/wallet-button.css';
+import './wallet-modal/wallet-modal.css';
 
 registerBlockType(metadata.name, {
     ...metadata,
@@ -15,7 +22,6 @@ registerBlockType(metadata.name, {
             <div {...useBlockProps()}>
                 <Button
                     text='Connect Wallet'
-                    onClick={() => {}}
                 />
             </div>
         </Fragment>;
@@ -24,7 +30,7 @@ registerBlockType(metadata.name, {
         <div 
             {...useBlockProps.save()} 
             className="wp-block-jsonsender-walletconnect"
-        ></div>
+        />
     )
 });
 

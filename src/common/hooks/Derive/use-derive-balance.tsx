@@ -1,3 +1,91 @@
+// src/hooks/useDeriveBalancesAll.ts
+import { DeriveBalancesAll } from '@polkadot/api-derive/types';
+import { useEffect, useRef, useState } from 'react';
+import { useVaraGearData } from '../VaraGearData/useVaraGearData';
+
+type UseDeriveBalancesAllParams = {
+  address?: string;
+  watch?: boolean;          // si true, se suscribe
+};
+
+type UseDeriveBalancesAllReturn = {
+  data?: DeriveBalancesAll;
+  error?: string;
+  loading: boolean;
+};
+
+export function useDeriveBalancesAll({
+  address,
+  watch = false,
+}: UseDeriveBalancesAllParams): UseDeriveBalancesAllReturn {
+  // const { api, isApiReady } = useApi();
+  const { sailsCallsInstance, isApiReady } = useVaraGearData();
+
+  const [data, setData] = useState<DeriveBalancesAll>();
+  const [error, setError]   = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const unsubRef = useRef<() => void>(undefined);
+
+  // ❶ Consulta única o suscripción
+  useEffect(() => {
+    if (!isApiReady || !address) return;
+
+    setLoading(true);
+    setError(undefined);
+
+    // helper que actualiza estado común
+    const handleResult = (result: DeriveBalancesAll) => {
+      setData(result);
+      setLoading(false);
+    };
+
+    // modo watch = true ➜ suscripción
+    if (watch) {
+      sailsCallsInstance.getGearApi.derive.balances
+        .all(address, handleResult)
+        .then((unsub) => {
+          unsubRef.current = unsub;
+        })
+        .catch((err) => {
+          setError(err.message ?? 'Error desconocido');
+          setLoading(false);
+        });
+      return () => unsubRef.current?.();
+    }
+
+    // modo sólo fetch una vez
+    sailsCallsInstance.getGearApi.derive.balances
+      .all(address)
+      .then(handleResult)
+      .catch((err) => {
+        setError(err.message ?? 'Error desconocido');
+        setLoading(false);
+      });
+  }, [sailsCallsInstance, isApiReady, address, watch]);
+
+  // ❷ Limpiar suscripción al desmontar
+  useEffect(() => () => unsubRef.current?.(), []);
+
+  return { data, error, loading };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import { DeriveBalancesAll } from '@polkadot/api-derive/types';
 // import { useQueryClient } from '@tanstack/react-query';
 // import { useEffect } from 'react';
@@ -57,57 +145,65 @@
 
 
 
-import { useEffect, useState, useRef } from '@wordpress/element';
-import { DeriveBalancesAll } from '@polkadot/api-derive/types';
-import { useVaraGearData } from '../VaraGearData/useVaraGearData';
+// import { useEffect, useState, useRef } from 'react';
+// import { DeriveBalancesAll } from '@polkadot/api-derive/types';
+// import { useVaraGearData } from '../VaraGearData/useVaraGearData';
 
-type UseDeriveBalancesAllParameters = {
-  address: string | undefined;
-  watch?: boolean;
-};
+// type UseDeriveBalancesAllParameters = {
+//   address: string | undefined;
+//   watch?: boolean;
+// };
 
-function useDeriveBalancesAll({ address, watch }: UseDeriveBalancesAllParameters) {
-  const { sailsCallsInstance, isApiReady } = useVaraGearData();
-  const [data, setData] = useState<DeriveBalancesAll | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+// function useDeriveBalancesAll({ address, watch }: UseDeriveBalancesAllParameters) {
+//   const { sailsCallsInstance, isApiReady } = useVaraGearData();
+//   const [data, setData] = useState<DeriveBalancesAll | null>(null);
+//   const [loading, setLoading] = useState<boolean>(false);
+//   const [error, setError] = useState<Error | null>(null);
 
-  const unsubRef = useRef<() => void>();
+//   const getDeriveBalancesAll = () => {
+//     if (!isApiReady) throw new Error('API is not initialized');
+//     if (!address) throw new Error('Address not found');
 
-  useEffect(() => {
-    if (!isApiReady || !address) return;
+//     return sailsCallsInstance.getGearApi
+//       .derive
+//       .balances
+//       .all(address);
+//   };
 
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const result = await sailsCallsInstance.getGearApi.derive.balances.all(address);
-        setData(result);
-        setError(null);
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
+//   useEffect(() => {
+//     if (!isApiReady || !address) return;
 
-    fetchData();
+//     const fetchData = async () => {
+//       try {
+//         setLoading(true);
+//         const result = await sailsCallsInstance.getGearApi.derive.balances.all(address);
+//         setData(result);
+//         setError(null);
+//       } catch (err) {
+//         setError(err as Error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-    if (watch) {
-      sailsCallsInstance.getGearApi.derive.balances.all(address, (result) => {
-        setData(result);
-      }).then((unsub) => {
-        unsubRef.current = unsub;
-      });
-    }
+//     fetchData();
 
-    return () => {
-      if (unsubRef.current) {
-        unsubRef.current();
-      }
-    };
-  }, [isApiReady, address, watch, sailsCallsInstance]);
+//     if (watch) {
+//       sailsCallsInstance.getGearApi.derive.balances.all(address, (result) => {
+//         setData(result);
+//       }).then((unsub) => {
+//         unsubRef.current = unsub;
+//       });
+//     }
 
-  return { data, loading, error };
-}
+//     return () => {
+//       if (unsubRef.current) {
+//         unsubRef.current();
+//       }
+//     };
+//   }, [isApiReady, address, watch, sailsCallsInstance]);
 
-export { useDeriveBalancesAll };
+//   return { data, loading, error };
+// }
+
+// export { useDeriveBalancesAll };
