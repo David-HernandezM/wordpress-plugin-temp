@@ -1,5 +1,6 @@
 import * as Gear from '@gear-js/ui';
 import * as Vara from '@gear-js/vara-ui';
+import { Identicon } from '@polkadot/react-identicon';
 // import { Button as ButtonV, ButtonProps as ButtonPropsV } from '@gear-js/vara-ui';
 // import { ButtonProps as ButtonPropsG, buttonStyles } from '@gear-js/ui';
 import cx from 'clsx';
@@ -16,9 +17,11 @@ type Props<T extends Vara.ButtonProps | Gear.ButtonProps> = {
 } & Pick<T, 'block' | 'color' | 'size' | 'onClick'>;
 
 function VaraAccountButton({ address, name, color = 'primary', size, block, onClick }: Props<Vara.ButtonProps>) {
+    
     return (
-        <Vara.Button type="button" size={size} color={color} onClick={onClick} block={block}>
-          <span>{name}</span>
+      <Vara.Button type="button" size={size} color={color} onClick={onClick} block={block}>
+        <Identicon value={address} size={16} theme="polkadot" className="gear-vara-wallet-connect-account-button-gear-icon" />
+        <span>{name}</span>
       </Vara.Button>
     )
 }
@@ -30,16 +33,11 @@ function GearAccountButton(props: Props<Gear.ButtonProps>) {
     <button
       type="button"
       className={cx(
-        Gear.buttonStyles.button,
-        Gear.buttonStyles.noWrap,
-        Gear.buttonStyles[size],
-        Gear.buttonStyles[color],
-        block && Gear.buttonStyles.block,
-        // buttonStyles.button,
-        // buttonStyles.noWrap,
-        // buttonStyles[size],
-        // buttonStyles[color],
-        // block && buttonStyles.block,
+        "gear-vara-wallet-connect-account-button-gear-button", // Gear.buttonStyles.button,
+        "gear-vara-wallet-connect-account-button-gear-nowrap", // Gear.buttonStyles.noWrap,
+        `gear-vara-wallet-connect-account-button-gear-size-${size}`,
+        `gear-vara-wallet-connect-account-button-gear-color-${color}`, // Gear.buttonStyles[color],
+        block && "gear-vara-wallet-connect-account-button-gear-block" // Gear.buttonStyles.block,
       )}
       onClick={onClick}>
       <span>{name}</span>

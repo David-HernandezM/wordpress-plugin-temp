@@ -1,4 +1,88 @@
-.wallet-connect-gear-vara-icon {
+.gear-vara-wallet-connect-account-button-gear-icon {
   /* overriding Identicon */
   cursor: pointer !important;
+}
+
+.gear-vara-wallet-connect-account-button-gear-block {
+  width: 100%;
+}
+
+.gear-vara-wallet-connect-account-button-gear-button {
+  border: none;
+  cursor: pointer;
+  font-family: Kanit, sans-serif;
+  transition: 0.25s all;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 24px;
+}
+
+.gear-vara-wallet-connect-account-button-gear-button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.gear-vara-wallet-connect-account-button-gear-nowrap {
+  white-space: nowrap;
+}
+
+.gear-vara-wallet-connect-account-button-gear-size-large {
+  max-height: 48px;
+  padding: 16px 32px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.gear-vara-wallet-connect-account-button-gear-size-large .icon {
+  margin-right: 10px;
+}
+
+.gear-vara-wallet-connect-account-button-gear-size-medium {
+  max-height: 40px;
+  padding: 12px 24px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.gear-vara-wallet-connect-account-button-gear-size-medium .icon {
+  margin-right: 10px;
+}
+
+.gear-vara-wallet-connect-account-button-gear-size-small {
+  max-height: 24px;
+  padding: 6px 16px;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.gear-vara-wallet-connect-account-button-gear-size-small .icon {
+  margin-right: 6px;
+}
+
+.gear-vara-wallet-connect-account-button-gear-color-light {
+  background-color: #ffffff1a;
+}
+
+.gear-vara-wallet-connect-account-button-gear-color-light:hover {
+  background-color: #ffffff4d;
+}
+
+.gear-vara-wallet-connect-account-button-gear-color-lightGreen {
+  color: #2bd071;
+  background-color: #2bd0711a;
+}
+
+.gear-vara-wallet-connect-account-button-gear-color-lightGreen:hover {
+  background-color: #2bd0714d;
+}
+
+.gear-vara-wallet-connect-account-button-gear-color-grey {
+  background-color: #414141;
+}
+
+.gear-vara-wallet-connect-account-button-gear-color-grey:hover {
+  background-color: #5e5e60;
 }

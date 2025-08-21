@@ -19,7 +19,7 @@ function copyRecursiveSync(src, dest) {
     }
 }
 
-
+const pluginVersion = "1.2.9";
 const buildDirPath = path.join(__dirname, 'build');
 const distDir = path.join(__dirname, metadata.name + '-dist');
 const commonDistDir = path.join(distDir.toString(), 'common');
@@ -39,7 +39,7 @@ const indexPhpContent =`<?php
 /**
  * Plugin Name: Vara Components
  * Description: Plugin con bloques personalizados para enviar datos autenticados.
- * Version: 1.0
+ * Version: ${pluginVersion}
  * Author: David
  */
 

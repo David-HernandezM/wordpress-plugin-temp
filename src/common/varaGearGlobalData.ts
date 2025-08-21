@@ -1,20 +1,15 @@
 import { SailsCalls } from "sailscalls";
-import { InjectedAccountWithMeta, Unsubcall } from "@polkadot/extension-inject/types";
+import { Unsubcall } from "@polkadot/extension-inject/types";
 import { Wallets, Account } from "./hooks/Account/types";
 import { Callback, SailsCallsData } from "./types";
 
 export class WalletsData {
-    // private appName: string,
-    // private accountsData: Value,
-    // private intervalAccountId: number | null, 
-    private listeners: Set<() => void> = new Set();
     private wallets: Wallets;
     private account: Account | undefined;
-    private unsubsInstance: Unsubcall[]
+    private unsubsInstance: Unsubcall[];
+    private listeners = new Set<Callback>();
 
     constructor() {
-        // this.appName = appName;
-        // this.accountsData = DEFAULT_VALUE;
         this.wallets = {};
         this.unsubsInstance = [];
     }
@@ -27,13 +22,16 @@ export class WalletsData {
         return this.wallets;
     }
 
-    subscribe(callback: Callback) {
-        this.listeners.add(callback);
-        return () => this.listeners.delete(callback);
+    private notify() {
+        for (const callback of this.listeners) {
+            callback();
+        }
     }
 
-    notify() {
-        for (const cb of this.listeners) cb();
+    addAction(callback: Callback) {
+        this.listeners.add(callback);
+
+        return () => this.listeners.delete(callback);
     }
 
     registerUnsub(unsub: Unsubcall) {
@@ -60,7 +58,6 @@ export class WalletsData {
     setWallets(wallets: Wallets | ((wallets: Wallets) => Wallets)) {
         if (typeof wallets != 'function') {
             this.wallets = wallets;
-            return;
         } else {
             this.wallets = wallets(this.wallets);
         }
@@ -94,7 +91,7 @@ export function getSailsCallsInstance(): SailsCalls | null {
     return sailscallsInstance;
 }
 
-export function getWalletsData(): WalletsData {
+export function getWalletsData(): WalletsData | null {
     return walletsDataInstance;
 }
 
@@ -103,23 +100,14 @@ export async function connectWallets(appName: string) {
     await web3Enable('My Gutenberg Wallet Block');  
     const allAccounts = await web3Accounts();
 
-    // startAccountsInterval(appName);
-    // window.addEventListener('beforeunload', cleanup);
-    // window.addEventListener('pagehide', cleanup);
-
     return allAccounts;
 }
 
-
-
 export default {
-    // initSailsCallsInstance,
     initSailsCalls,
     getSailsCallsInstance,
     getWalletsData,
-    // getSailsCallsInstance,
     connectWallets,
-    // getAccountsData,
 };
 
 
@@ -177,39 +165,6 @@ export default {
 
 
 
-
-
-
-
-
-
-
-
-// declare global {
-//   interface Window {
-//     walletsStore?: WalletsStore;
-//   }
-// }
-
-// if (!window.walletsStore) {
-//   let listeners: Callback[] = [];
-
-//   window.walletsStore = {
-//     subscribe(callback: Callback) {
-//       listeners.push(callback);
-//       return () => {
-//         listeners = listeners.filter(cb => cb !== callback);
-//       };
-//     },
-//     emitChange() {
-//       listeners.forEach(cb => cb());
-//     },
-//   };
-// }
-
-// export const walletsStore = window.walletsStore!;
-
-
 // type Value = {
 //   wallets: Wallets | undefined;
 //   account: Account | undefined;
@@ -219,14 +174,8 @@ export default {
 //   logout: () => void;
 // };
 
-// const DEFAULT_VALUE = {
-//   wallets: undefined,
-//   account: undefined,
-//   isAnyWallet: false,
-//   isAccountReady: false,
-//   login: () => {},
-//   logout: () => {},
-// } as const;
+
+
 
 // type Callback = () => void;
 

@@ -69,8 +69,6 @@ export function WalletModal({ theme = "vara", close }: Props) {
             return;
         }
 
-        console.log("Se va a iniciar sesion: ", meta.name);
-
         login(_account);
         close();
       };

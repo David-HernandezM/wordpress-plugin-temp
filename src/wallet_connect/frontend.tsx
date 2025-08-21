@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { decodeAddress } from '@gear-js/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
-import { Modal, Button } from '@gear-js/ui';
 import { useVaraGearData } from '../common/hooks/VaraGearData/useVaraGearData';
 import { Wallet } from './wallet';
 import { Balance } from './Balance';
@@ -22,11 +21,9 @@ import './wallet-modal/wallet-modal.css';
 // import './styles.css';
 
 function WalletConnectButton() {
-    const [accounts, setAccounts] = useState<string[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
     const { rpcUrl, contractAddress, contractIdl } = usePluginData();
-    const { sailsCallsInstance } = useVaraGearData({
+    useVaraGearData({
+        initWallets: true,
         initSailsCalls: true,
         sailsCallsData: {
             rpcUrl: rpcUrl || '',
@@ -35,69 +32,10 @@ function WalletConnectButton() {
         }
     });
 
-
-    const connectWallet = async () => {
-        setLoading(true);
-
-        const { connectWallets } = (window as any).varaGearGlobalData;
-        const appName = (window as any).GearPluginSettings?.gearAppName || null;
-
-        if (!appName) {
-            console.log('App name not set');
-            return;
-        }
-
-        const allAccounts = await connectWallets(appName);
-
-        allAccounts.forEach(acc => {
-            console.log(acc.address);
-            console.log(decodeAddress(acc.address));
-        });
-
-        setAccounts(allAccounts.map(acc => acc.address));
-
-
-        setLoading(false);
-    };
-
     return (
-        <div style={{ border: '1px solid #888', padding: '10px' }}>
-        
-            <Wallet theme='vara'/>
-
-
-            <Button
-                onClick={connectWallet}
-                text={loading ? 'Conectando......' : 'Conectar Wallet Polkadot!'}
-                color='primary'
-            />
-
-            <Button
-                onClick={() => setModalOpen(true)}
-                text='testing modal component'
-                color='primary'
-            />
-            {
-                modalOpen && (
-                    <Modal
-                        close={() => setModalOpen(false)}
-                        heading='Connect wallet'
-                        size='large'
-                    >
-                        <p>Wallets</p>
-                    </Modal>
-                )
-            }
-            {accounts.length > 0 && (
-                <div>
-                    <strong>Cuentas conectadas:</strong>
-                    <ul>
-                        {accounts.map(addr => (
-                            <li key={addr}>{addr}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+        <div style={{ border: '1px solid #888', padding: '10px', backgroundColor: "gray" }}>
+            <Wallet theme="vara"/>
+            <Wallet theme="gear"/>
         </div>
     );
 }

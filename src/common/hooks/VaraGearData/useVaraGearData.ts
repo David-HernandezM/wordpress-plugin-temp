@@ -1,15 +1,3 @@
-// import { useDispatch, useSelect } from "@wordpress/data";
-// import { useState, useEffect } from "react";
-// import VaraGearStore, { 
-//     VARA_STORE_KEY, 
-//     selectors as sel, 
-//     actions as act, 
-//     VaraPluginGLobalState 
-// } from "./sailscalls-state";
-
-// type Selectors = typeof self;
-// type Actions = typeof act;
-
 import {
     useState, 
     useEffect,
@@ -17,22 +5,16 @@ import {
     useMemo
 } from "react";
 import type { SailsCalls } from "sailscalls";
-import type { WalletsData } from "../../varaGearGlobalData";
+import { WalletsData } from "../../varaGearGlobalData";
 import type { WindowFunctions } from "../../types";
-
-type  Value = 
-    | {
-        sailsCallsInstance: undefined,
-        isApiReady: false
-      }
-    | {
-        sailsCallsInstance: SailsCalls,
-        isApiReady: true
-      };
-
+import { DEFAULT_INJECT_TIMEOUT_MS } from "../Account/consts";
+import { getLoggedInAccount, getWallets } from "../Account/utils";
+import { Account, Wallet } from "../Account/types";
+import { Unsubcall } from "@polkadot/extension-inject/types";
 
 interface Props {
     initSailsCalls?: boolean;
+    initWallets?: boolean;
     sailsCallsData?: InitSailsCallsProps;
 }
 
@@ -61,11 +43,53 @@ export function useVaraGearData(data?: Props) {
     const [sailsCallsInstance, setSailsCallsInstance] = useState<SailsCalls>();
     const walletsData = useRef<WalletsData>(getWalletsData());
     const sailscallsIntervalId = useRef<number | null>(null);
+    const walletsDataIntervalId = useRef<number | null>(null);
+
+    const handleWalletChange = (id: string, wallet: Wallet) => {
+        walletsData.current.setWallets((prevWallets) => (prevWallets ? { ...prevWallets, [id]: wallet } : prevWallets))
+    }
+
+    const handleAccountsChange = (id: string, accounts: Account[]) => {
+        walletsData.current.setWallets((prevWallets) =>
+            prevWallets ? { ...prevWallets, [id]: { ...prevWallets[id], accounts } } : prevWallets,
+        );
+
+        walletsData.current.setAccount((prevAccount) => {
+            if (!prevAccount || id !== prevAccount.meta.source) return prevAccount;
+
+            const isLoggedIn = Boolean(accounts.length) && accounts.some(({ address }) => address === prevAccount.address);
+
+            if (isLoggedIn) return prevAccount;
+        });
+    };
+
+    const registerUnsub = (unsub: Unsubcall) => {
+        walletsData.current.registerUnsub(unsub);
+    };
+
+    // useEffect to init wallets and web3 connect part
+    useEffect(() => {
+        let timeOutId: NodeJS.Timeout | null = null;
+
+        if (data && data.initWallets) {
+            timeOutId = setTimeout(() => {
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises -- TODO(#1816): resolve eslint comments
+                getWallets(gearAppName ?? "VaraApp", handleAccountsChange, handleWalletChange, registerUnsub).then((result) => {
+                    walletsData.current.setWallets(result);
+                    walletsData.current.setAccount(getLoggedInAccount(result));
+                });
+            }, DEFAULT_INJECT_TIMEOUT_MS);
+
+        }
+
+        return () => {
+            if (timeOutId) clearTimeout(timeOutId);
+            walletsData.current.cleanUnsubs();
+        }
+    }, []);
     
     // useEffect to init SailsCalls instance
     useEffect(() => {
-        // const { initSailsCalls, getSailsCallsInstance } = (window as any).varaGearGlobalData;
-
         const getInstanceIntervalId = window.setInterval(() => {
             const sailsCallsInstance = getSailsCallsInstance();
 
@@ -80,7 +104,6 @@ export function useVaraGearData(data?: Props) {
         if (data) {
             if (data.initSailsCalls) {
                 if (!data.sailsCallsData) throw new Error('sailscalls data missing');
-
                 initSailsCalls(data.sailsCallsData);
             }
         }

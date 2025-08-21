@@ -5,6 +5,10 @@ const webpack = require('webpack');
 
 module.exports = merge(defaultConfig, {
     resolve: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+        alias: {
+            process: require.resolve('process/browser.js')
+        },
         fallback: {
             assert: require.resolve('assert/'),
             buffer: require.resolve('buffer/'),
@@ -15,7 +19,6 @@ module.exports = merge(defaultConfig, {
     },
     module: {
         rules: [
-            // Esta regla permite importar SVGs como componentes React
             {
                 test: /\.svg$/i,
                 issuer: /\.[jt]sx?$/,

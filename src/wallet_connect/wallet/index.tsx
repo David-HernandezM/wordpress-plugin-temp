@@ -5,7 +5,6 @@ import { VaraAccountButton } from "../account-button";
 import { GearAccountButton } from "../account-button";
 import { Balance } from "../Balance";
 import { WalletModal } from "../wallet-modal";
-// import './wallet.css';
 
 type Props = {
     theme?: 'gear' | 'vara';
@@ -21,18 +20,16 @@ export function Wallet({ theme='vara', displayBalance = true, accountButtonClass
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    if (!isAccountReady) return null;
+    useEffect(() => {
+        console.log("CAMBIO ACCOUNT IN MAIN COMPONENT!!");
+    }, [account]);
 
-    // useEffect(() => {
-    //     console.log("El account cambio!!!");
-    //     console.log(account);
-    // }, [account]);
+    if (!isAccountReady) return null;
 
     return (
         <>
             <div className="gear-vara-wallet">
-                { displayBalance && <Balance theme={theme} /> }
-
+                { account && displayBalance && <Balance theme={theme} /> }
                 {
                     account ? (
                         <div className={accountButtonClassName}>

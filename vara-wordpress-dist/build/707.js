@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkvara_wordpress=globalThis.webpackChunkvara_wordpress||[]).push([[707],{4707:(a,s,e)=>{e.d(s,{web3Accounts:()=>r.OZ,web3Enable:()=>r.jP});var r=e(1472)}}]);
